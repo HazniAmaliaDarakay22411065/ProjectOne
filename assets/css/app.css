@@ -1,0 +1,479 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Kanit', sans-serif; 
+
+    --s: 50px;
+    --c: #223148;
+    /* Warna biru tua */
+    --_s: calc(2*var(--s)) calc(2*var(--s));
+    --_g: 35.36% 35.36% at;
+    --_c: #0000 66%, #2c3e50 68% 70%, #0000 72%;
+    /* Mengubah warna ke biru tua */
+
+    background:
+        radial-gradient(var(--_g) 100% 25%, var(--_c)) var(--s) var(--s)/var(--_s),
+        radial-gradient(var(--_g) 0 75%, var(--_c)) var(--s) var(--s)/var(--_s),
+        radial-gradient(var(--_g) 100% 25%, var(--_c)) 0 0/var(--_s),
+        radial-gradient(var(--_g) 0 75%, var(--_c)) 0 0/var(--_s),
+        repeating-conic-gradient(var(--c) 0 25%, #0000 0 50%) 0 0/var(--_s),
+        radial-gradient(var(--_c)) 0 calc(var(--s)/2)/var(--s) var(--s) var(--c);
+
+    background-attachment: fixed;
+}
+
+
+/* navbar color text*/
+.navbar-nav {
+    font-family:'Kanit', sans-serif ;
+  }
+  .nav-link, .dropdown-item {
+      margin: 0 10px; /* Jarak horizontal (kiri dan kanan) */
+  }
+  /* Menyembunyikan teks pada layar kecil */
+  @media (max-width: 434px) { /* Ubah dari 400px menjadi 434px */
+      .navbar-brand-text {
+          display: none; /* Sembunyikan teks */
+      }
+      .navbar-brand-img {
+          display: inline; /* Tampilkan gambar */
+      }
+  }
+
+/* Menampilkan teks pada layar besar */
+@media (min-width: 435px) { /* Ubah dari 401px menjadi 435px */
+    .navbar-brand-text {
+        display: inline; /* Tampilkan teks */
+    }
+    .navbar-brand-img {
+        display: inline; /* Tampilkan gambar */
+    }
+}
+
+
+   /* Menggunakan font Kanit untuk seluruh halaman */
+
+
+/* navbar color text */
+.gradient-text {
+    background: linear-gradient(to right, #B3B2B0, #003366); /* Gradien dari abu-abu ke biru tua */
+    -webkit-background-clip: text; /* Memotong latar belakang untuk teks */
+    -webkit-text-fill-color: transparent; /* Menghilangkan warna teks asli */
+    display: inline-block; /* Agar background clip berfungsi dengan baik */
+}
+.nav-link {
+    position: relative; /* Agar garis bawah dapat diposisikan dengan benar */
+    text-decoration: none; /* Menghilangkan garis bawah default */
+    padding: 10px 15px; /* Padding untuk semua link */
+    border-radius: 5px; /* Sudut membulat untuk semua link */
+    transition: background-color 0.3s ease; /* Transisi halus untuk latar belakang */
+}
+
+.nav-link:hover {
+    color: #0056b3; /* Ubah warna teks saat hover */
+    background-color: rgba(0, 86, 179, 0.1); /* Warna latar belakang saat hover */
+}
+
+.nav-link i {
+    margin-left: 5px; /* Jarak antara teks dan ikon */
+}
+
+.dropdown-menu {
+    background-color: #fff; /* Warna latar belakang dropdown */
+}
+
+.dropdown-item:hover {
+    background-color: #cfd4da; /* Warna latar belakang item dropdown saat hover */
+    color: #fff; /* Warna teks item dropdown saat hover */
+}
+
+.navbar {
+    padding: 1rem; /* Padding navbar */
+}
+.nav-link, .dropdown-item {
+    margin: 0 7px; /* Jarak horizontal (kiri dan kanan) */
+}
+
+/* Menyembunyikan teks pada layar kecil */
+@media (max-width: 434px) {
+    .navbar-brand-text {
+        display: none; /* Sembunyikan teks */
+    }
+    .navbar-brand-img {
+        display: inline; /* Tampilkan gambar */
+    }
+}
+
+/* Menampilkan teks pada layar besar */
+@media (min-width: 435px) {
+    .navbar-brand-text {
+        display: inline; /* Tampilkan teks */
+    }
+    .navbar-brand-img {
+        display: inline; /* Tampilkan gambar */
+    }
+}
+
+
+/* Welcome Section */
+.welcome-container {
+    background-color: #003366; 
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    text-align: center; 
+    color: white; /* Warna teks */
+}
+
+/* Responsif untuk welcome section */
+@media (max-width: 768px) {
+    .welcome-container h3 {
+        font-size: 1.5rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+    .welcome-container p {
+        font-size: 1rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+}
+
+/* Tambahan untuk navbar */
+.navbar {
+    padding: 10px; /* Padding untuk navbar */
+}
+
+.navbar-nav .nav-item {
+margin-right: 10px; /* Atur jarak antar link */
+}
+
+.navbar-nav .nav-link {
+padding: 0.5rem 1rem; /* Atur padding untuk link */
+}
+
+/* Responsif untuk navbar */
+@media (max-width: 576px) {
+    .navbar-nav .nav-link {
+        font-size: 0.9rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+}
+
+/* Carousel caption */
+.carousel-caption h5 {
+    font-size: 1.5rem; /* Ukuran font untuk judul caption */
+}
+
+.carousel-caption p {
+    font-size: 1rem; /* Ukuran font untuk deskripsi caption */
+}
+
+/* Responsif untuk caption */
+@media (max-width: 768px) {
+    .carousel-caption h5 {
+        font-size: 1.2rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+    .carousel-caption p {
+        font-size: 0.9rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+}
+/* Responsif untuk welcome section */
+@media (max-width: 768px) {
+    .welcome-container h3 {
+        font-size: 1.5rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+    .welcome-container p {
+        font-size: 1rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+    .container-fluid {
+        padding: 10px; /* Mengurangi padding pada layar kecil */
+    }
+}
+
+/* Responsif untuk footer */
+@media (max-width: 768px) {
+    footer {
+        padding: 15px; /* Mengurangi padding pada layar kecil */
+    }
+    footer p {
+        font-size: 0.9rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+}
+
+@media (max-width: 576px) {
+    footer p {
+        font-size: 0.8rem; /* Ukuran font lebih kecil pada layar sangat kecil */
+    }
+}
+
+
+/* Responsif untuk kontak section */
+@media (max-width: 768px) {
+    .welcome-container h3 {
+        font-size: 1.5rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+    .welcome-container p {
+        font-size: 1rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+    .container-fluid {
+        padding: 10px; /* Mengurangi padding pada layar kecil */
+    }
+}
+
+/* Responsif untuk informasi kontak */
+@media (max-width: 576px) {
+    .list-unstyled li {
+        font-size: 0.9rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+}
+
+/* Responsif untuk testimoni section */
+@media (max-width: 768px) {
+    .welcome-container h3 {
+        font-size: 1.5rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+    .welcome-container p {
+        font-size: 1rem; /* Ukuran font lebih kecil pada layar kecil */
+    }
+    .container-fluid {
+        padding: 10px; /* Mengurangi padding pada layar kecil */
+    }
+}
+
+      /* Responsif untuk informasi kontak */
+      @media (max-width: 576px) {
+          .list-unstyled li {
+              font-size: 0.9rem; /* Ukuran font lebih kecil pada layar kecil */
+          }
+      }
+
+      .img-fluid {
+      max-width: 100%; /* Pastikan gambar tidak melebihi lebar kontainer */
+      height: auto; /* Tinggi otomatis untuk menjaga rasio aspek */
+  }
+
+  /* ukuran huruf welcome */
+  @media (max-width: 768px) {
+    .welcome-container {
+        padding: 10px; /* Padding lebih kecil */
+    }
+
+    .welcome-container h3 {
+        font-size: 1.5em; /* Ukuran font lebih kecil */
+    }
+
+    .welcome-container .address {
+        font-size: 1em; /* Ukuran font lebih kecil untuk alamat */
+    }
+}
+
+/* Media query untuk layar sangat kecil */
+@media (max-width: 480px) {
+    .welcome-container {
+        padding: 5px; /* Padding lebih kecil lagi */
+    }
+
+    .welcome-container h3 {
+        font-size: 1.2em; /* Ukuran font lebih kecil lagi */
+    }
+
+    .welcome-container .address {
+        font-size: 0.9em; /* Ukuran font lebih kecil lagi untuk alamat */
+    }
+}
+   /* Menampilkan submenu ke samping */
+   .dropdown-submenu {
+        position: relative;
+    }
+
+    .dropdown-submenu .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: 0;
+        margin-left: 0;
+        display: none;
+    }
+
+    .dropdown-submenu:hover .dropdown-menu {
+        display: block;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    
+    .image-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .zoom-image {
+        transition: transform 0.2s ease-in-out;
+    }
+    .zoom-image:hover {
+        transform: scale(1.1);
+    }
+    .center-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 30vh;
+        width: 50%; 
+        height: auto; /* Pastikan height diatur auto */
+        max-height: 400px; 
+        object-fit: contain;
+    }
+    .sambutan {
+        text-align: left;
+    }
+    .sambutan h2 {
+        font-weight: bold;
+        color: #ffff;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        margin-top: 5rem;
+    }
+/* home */
+.info-box {
+    border-radius: 0.25rem;
+    padding: 1rem;
+    background-color: #f8f9fa; /* sama seperti .bg-light */
+    cursor: pointer; 
+}
+
+.info-box:hover {
+     transform: scale(1.05);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+.info-box-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-box-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.info-box-text {
+    font-size: 4rem;
+}
+
+    /* register */
+
+    /* style.css */
+
+/* Kalau kamu tetap mau responsif ukuran gambar logo */
+.register-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Tambahan hover khusus (opsional) */
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Jika ingin menambahkan animasi ringan */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container-ekskul {
+    background-color: #223148; /* Warna latar belakang untuk bagian ekstrakurikuler */
+    color: white; /* Warna teks */
+    padding: 20px; /* Padding di dalam kontainer */
+    border-radius: 10px; /* Sudut melengkung */
+    text-align: center;
+    margin-top: 5rem; /* Jarak atas */
+}
+
+/* Text JUDUL */
+.container-fasilitas {
+    background-color: #223148; /* Warna latar belakang untuk bagian visi */
+    color: white; /* Warna teks */
+    padding: 20px; /* Padding di dalam kontainer */
+    border-radius: 10px; /* Sudut melengkung */
+    text-align: center;
+    margin-top: 10rem; /* Jarak atas */
+}
+
+/* Text JUDUL */
+.container-kemas {
+    background-color: #223148; /* Warna latar belakang untuk bagian visi */
+    color: white; /* Warna teks */
+    padding: 20px; /* Padding di dalam kontainer */
+    border-radius: 10px; /* Sudut melengkung */
+    text-align: center;
+    margin-top: 10rem; /* Jarak atas */
+}
+
+/* text*/
+.container-guru {
+    background-color: #223148; /* Warna latar belakang untuk bagian visi */
+    color: white; /* Warna teks */
+    padding: 20px; /* Padding di dalam kontainer */
+    border-radius: 10px; /* Sudut melengkung */
+    text-align: center;
+    margin-top: 10rem; /* Jarak atas */
+}
+
+.card {
+    min-height: 300px;
+     /* Atur tinggi minimum untuk card */
+    }
+    
+    .card-img-top {
+        height: 200px; 
+        /* Atur tinggi gambar */
+        object-fit: cover; 
+        /* Pastikan gambar tidak terdistorsi */
+    }
+
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
+    .card img {
+        max-height: 200px;
+        object-fit: cover;
+    }
+    
+    .input-group {
+        width: 100%;
+    }
+
+    .container-visi {
+    background-color: #223148; /* Warna latar belakang untuk bagian visi */
+    color: white; /* Warna teks */
+    padding: 20px; /* Padding di dalam kontainer */
+    border-radius: 10px; /* Sudut melengkung */
+    text-align: center;
+    margin-top: 10rem; /* Jarak atas */
+}
+.container-misi {
+    background-color: #ffffff; /* Warna latar belakang untuk misi */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan */
+    border-radius: 10px; /* Sudut melengkung */
+    padding: 20px; /* Padding di dalam kontainer */
+    margin-top: 20px; /* Jarak atas */
+}
+h4, h5 {
+    font-family: 'Oswald', sans-serif; /* Menggunakan font Oswald untuk judul */
+}
+ol {
+    padding-left: 20px; /* Padding kiri untuk daftar */
+}
+   /* sambutan */
+
+ .kepsek-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 200px;
+}
