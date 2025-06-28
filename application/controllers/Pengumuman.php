@@ -29,7 +29,7 @@ class Pengumuman extends MY_Controller
         );
         $data['page']         = 'pages/pengumuman/index';
 
-        $this->view($data);
+        $this->viewAdmin($data);
     }
 
     public function search($page = null)
@@ -51,7 +51,7 @@ class Pengumuman extends MY_Controller
         );
         $data['page']         = 'pages/pengumuman/index';
 
-        $this->view($data);
+        $this->viewAdmin($data);
     }
 
     public function reset()
@@ -85,7 +85,7 @@ class Pengumuman extends MY_Controller
             $data['form_action']  = base_url('pengumuman/create');
             $data['page']         = 'pages/pengumuman/form';
 
-            $this->view($data);
+            $this->viewAdmin($data);
             return;
         }
 
@@ -182,7 +182,7 @@ class Pengumuman extends MY_Controller
             $data['form_action'] = base_url("pengumuman/edit/$id");
             $data['page'] = 'pages/pengumuman/form';
 
-            $this->view($data);
+            $this->viewAdmin($data);
             return;
         }
 

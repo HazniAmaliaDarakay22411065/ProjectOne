@@ -29,7 +29,7 @@ class Visi_misi extends MY_Controller
         );
         $data['page']         = 'pages/visi_misi/index';
 
-        $this->view($data);
+        $this->viewAdmin($data);
     }
 
     public function create()
@@ -46,7 +46,7 @@ class Visi_misi extends MY_Controller
             $data['form_action'] = base_url('visi_misi/create');
             $data['page']        = 'pages/visi_misi/form';
 
-            $this->view($data);
+            $this->viewAdmin($data);
             return;
         }
 
@@ -110,7 +110,7 @@ class Visi_misi extends MY_Controller
             $data['form_action'] = base_url("visi_misi/edit/$id");
             $data['page']        = 'pages/visi_misi/form';
 
-            $this->view($data);
+            $this->viewAdmin($data);
             return;
         }
 

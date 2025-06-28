@@ -17,9 +17,10 @@
                         PROFIL
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownProfil">
-                        <li><a class="dropdown-item text-dark" href="<?= base_url('visi_misi/show') ?>">Visi, Misi dan Tujuan Sekolah</a></li>
-                        <li><a class="dropdown-item text-dark" href="<?= base_url('sejarah') ?>">Sejarah</a></li>
-                        <li><a class="dropdown-item text-dark" href="<?= base_url('guru/show') ?>">Guru dan Staf</a></li>
+                        <li><a class="dropdown-item text-dark" href="<?= base_url('profil/identitas') ?>">Identitas Sekolah</a></li>
+                        <li><a class="dropdown-item text-dark" href="<?= base_url('profil/visi_misi') ?>">Visi & Misi</a></li>
+                        <li><a class="dropdown-item text-dark" href="<?= base_url('profil/sejarah') ?>">Sejarah</a></li>
+                        <li><a class="dropdown-item text-dark" href="<?= base_url('guru/show') ?>">Guru dan Tendik</a></li>
                         <li><a class="dropdown-item text-dark" href="<?= base_url('fasilitas/show') ?>">Fasilitas</a></li>
                         <li><a class="dropdown-item text-dark" href="<?= base_url('kegiatan_masyarakat/show') ?>">Keg. Masyarakat</a></li>
                     </ul>
@@ -39,15 +40,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        INFORMASI
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownInformasi">
-                        <li><a class="dropdown-item text-dark" href="<?= base_url('pengumuman/show') ?>">Pengumuman</a></li>
-                        <li><a class="dropdown-item text-dark" href="<?= base_url('agenda/show') ?>">Agenda</a></li>
-                    </ul>
-                </li>
+                <li class="nav-item"><a class="nav-link text-dark" href="<?= base_url('berita/show') ?>">BERITA</a></li>
+
+
                 <li class="nav-item"><a class="nav-link text-dark" href="<?= base_url('galeri/show') ?>">GALERI</a></li>
                 <?php if (! $this->session->userdata('is_login')) : ?>
                     <!-- Menampilkan tombol login dan register jika belum login -->

@@ -29,7 +29,7 @@ class Fasilitas extends MY_Controller
         );
         $data['page']         = 'pages/fasilitas/index';
 
-        $this->view($data);
+        $this->viewAdmin($data);
     }
 
     public function search($page = null)
@@ -55,7 +55,7 @@ class Fasilitas extends MY_Controller
         );
         $data['page']         = 'pages/fasilitas/index';
 
-        $this->view($data);
+        $this->viewAdmin($data);
     }
 
     public function reset()
@@ -68,10 +68,12 @@ class Fasilitas extends MY_Controller
     {
         if (!$_POST) {
             $input = (object) $this->fasilitas->getDefaultValues();
+            $input->id_fasilitas = $this->fasilitas->generateId(); // 💡 tambahkan ini
         } else {
             $input = (object) $this->input->post(null, true);
         }
 
+        // upload image
         if (!empty($_FILES) && $_FILES['image']['name'] !== '') {
             $imageName = url_title($input->judul, '-', true) . '-' . date('YmdHis');
             $upload = $this->fasilitas->uploadImage('image', $imageName);
@@ -88,8 +90,13 @@ class Fasilitas extends MY_Controller
             $data['form_action']  = base_url('fasilitas/create');
             $data['page']         = 'pages/fasilitas/form';
 
-            $this->view($data);
+            $this->viewAdmin($data);
             return;
+        }
+
+        // pastikan ID tidak kosong saat simpan
+        if (!isset($input->id_fasilitas) || empty($input->id_fasilitas)) {
+            $input->id_fasilitas = $this->fasilitas->generateId();
         }
 
         if ($this->fasilitas->create($input)) {
@@ -101,9 +108,10 @@ class Fasilitas extends MY_Controller
         redirect(base_url('fasilitas'));
     }
 
+
     public function edit($id)
     {
-        $data['content'] = $this->fasilitas->where('id', $id)->first();
+        $data['content'] = $this->fasilitas->where('id_fasilitas', $id)->first();
 
         if (!$data['content']) {
             $this->session->set_flashdata('warning', 'Data tidak ditemukan!');
@@ -135,11 +143,11 @@ class Fasilitas extends MY_Controller
             $data['form_action']  = base_url("fasilitas/edit/$id");
             $data['page']         = 'pages/fasilitas/form';
 
-            $this->view($data);
+            $this->viewAdmin($data);
             return;
         }
 
-        if ($this->fasilitas->where('id', $id)->update($data['input'])) {
+        if ($this->fasilitas->where('id_fasilitas', $id)->update($data['input'])) {
             $this->session->set_flashdata('success', 'Data berhasil diubah!');
         } else {
             $this->session->set_flashdata('error', 'Oops! Terjadi kesalahan.');
@@ -154,14 +162,14 @@ class Fasilitas extends MY_Controller
             redirect(base_url('fasilitas'));
         }
 
-        $fasilitas = $this->fasilitas->where('id', $id)->first();
+        $fasilitas = $this->fasilitas->where('id_fasilitas', $id)->first();
 
         if (!$fasilitas) {
             $this->session->set_flashdata('warning', 'Data tidak ditemukan!');
             redirect(base_url('fasilitas'));
         }
 
-        if ($this->fasilitas->where('id', $id)->delete()) {
+        if ($this->fasilitas->where('id_fasilitas', $id)->delete()) {
             if (!empty($fasilitas->image) && file_exists("./images/fasilitas/$fasilitas->image")) {
                 unlink("./images/fasilitas/$fasilitas->image");
             }
@@ -177,7 +185,7 @@ class Fasilitas extends MY_Controller
     public function show()
     {
         $data['title']     = 'Fasilitas Sekolah';
-        $data['fasilitas'] = $this->fasilitas->orderBy('id', 'DESC')->get();
+        $data['fasilitas'] = $this->fasilitas->orderBy('id_fasilitas', 'DESC')->get();
         $data['page']      = 'pages/fasilitas/show';
 
         $this->view($data);

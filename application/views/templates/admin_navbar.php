@@ -1,9 +1,7 @@
-<nav class="navbar-custom">
-    <div class="navbar-brand">
-        <img src="<?= base_url('img/logo.png') ?>" alt="Foto Admin">
-        SMP N 11 JAYAPURA
-    </div>
-    <div>
-        <a href="<?= base_url('auth/logout') ?>" class="btn btn-outline-dark btn-sm">Logout</a>
-    </div>
+<nav class="navbar-custom d-flex justify-content-between align-items-center p-2 bg-primary shadow">
+
+    <form action="<?= base_url('logout'); ?>" method="post" class="ms-auto">
+        <button type="submit" class="btn btn-outline-light">Logout</button>
+    </form>
+
 </nav>

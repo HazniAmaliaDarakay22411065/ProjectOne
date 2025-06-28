@@ -16,6 +16,7 @@ class Register extends MY_Controller
         }
     }
 
+
     public function index()
     {
         if (!$_POST) {
@@ -40,6 +41,29 @@ class Register extends MY_Controller
             redirect(base_url('register'));
         }
     }
+
+
+    /**
+     * Callback untuk validasi kekuatan password
+     */
+    public function validate_password_strength($password)
+    {
+        $uppercase = preg_match('@[A-Z]@', $password);
+        $lowercase = preg_match('@[a-z]@', $password);
+        $number    = preg_match('@[0-9]@', $password);
+        $special   = preg_match('@[^\w]@', $password); // simbol
+
+        if (!$uppercase || !$lowercase || !$number || !$special) {
+            $this->form_validation->set_message(
+                'validate_password_strength',
+                'Password harus mengandung huruf besar, huruf kecil, angka, dan simbol.'
+            );
+            return false;
+        }
+
+        return true;
+    }
 }
+
 
 /* End of file Register.php */

@@ -43,8 +43,8 @@
         <div class="row">
             <div class="col-12 col-md-4">
                 <div class="image-container bg-light" style="padding: 20px; display: flex; justify-content: center; align-items: center; border-radius: 9px; min-height: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-                    <?php if (!empty($sambutan->foto_kepsek)): ?>
-                        <img src="<?= base_url('images/kepsek/' . $sambutan->foto_kepsek) ?>" alt="Principal" class="img-fluid" style="max-width: 85%; height: auto; border-radius: 6px;">
+                    <?php if (!empty($sambutan->guru_foto)): ?>
+                        <img src="<?= base_url('images/guru/' . $sambutan->guru_foto) ?>" alt="Principal" class="img-fluid" style="max-width: 85%; height: auto; border-radius: 6px;">
                     <?php else: ?>
                         <img src="<?= base_url('images/default.jpg') ?>" alt="Principal" class="img-fluid" style="max-width: 85%; height: auto; border-radius: 6px;">
                     <?php endif; ?>
@@ -54,15 +54,14 @@
             <div class="col-12 col-md-8">
                 <div class="media text-light" style="display: flex; align-items: flex-start;">
                     <div class="media-body" style="flex: 1; text-align: left;">
-                        <h5 class="mt-0" style="font-family: Lexend Giga;">Sambutan Kepala Sekolah</h5>
-                        <p>Bismillahirrohmanirrohim</p>
-                        <p>Assalamu’alaikum Wr. Wb.</p>
+                        <h5 class="mt-0" style="font-family: Lexend Giga;">Sambutan Guru</h5>
+
                         <?php if (!empty($sambutan->isi_sambutan)): ?>
                             <p><?= character_limiter(strip_tags($sambutan->isi_sambutan), 300, '...') ?></p>
                         <?php else: ?>
                             <p>Sambutan belum tersedia.</p>
                         <?php endif; ?>
-                        <a href="<?= base_url('sambutan/show') ?>" class="btn btn-primary" style="font-family: Lexend Giga; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">Read More</a>
+                        <a href="<?= base_url('sambutan/show') ?>" class="btn btn-primary" style="font-family: Lexend Giga; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">Tampilkan Selengkapnya</a>
                     </div>
                 </div>
             </div>
@@ -127,30 +126,42 @@
                     <h2 class="text-light">Ekstrakurikuler</h2>
                 </div>
 
-                <!-- Card Ekstrakurikuler -->
-                <div class="row justify-content-center" style="position: relative; z-index: 1;">
-                    <?php foreach (array_slice($ekskul_preview, 0, 4) as $eks): ?>
-                        <div class="col-12 col-sm-6 col-md-3 mb-4">
-                            <div class="card h-100 shadow-sm border-0" style="border-radius: 12px;">
-                                <img src="<?= base_url('images/ekskul/' . $eks->image) ?>" class="card-img-top" alt="<?= $eks->judul ?>" style="height: 180px; object-fit: cover; border-radius: 12px 12px 0 0;">
-                                <div class="card-body text-center p-3" style="background-color: #f8f9fa; border-radius: 0 0 12px 12px;">
-                                    <h6 class="card-title text-dark mb-0" style="font-size: 15px; font-weight: 600;"><?= $eks->judul ?></h6>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
+                <!-- Deskripsi dan Card Ekstrakurikuler dalam satu baris -->
+                <div class="row align-items-center" style="position: relative; z-index: 1;">
+                    <!-- Deskripsi -->
+                    <div class="col-12 col-md-4 text-light mb-4 mb-md-0">
+                        <h5 class="fw-bold">Kenapa Ekstrakurikuler Penting?</h5>
+                        <p class="mt-3">
+                            Ekstrakurikuler adalah kegiatan di luar pelajaran yang membantu siswa berkembang secara sosial dan akademik. Kegiatan ini mendorong keterampilan kepemimpinan, kerja sama, dan kreativitas.
+                        </p>
+                        <a href="<?= base_url('ekskul/show') ?>" class="btn btn-primary mt-3">Tampilkan Selengkapnya</a>
+                    </div>
 
-                <!-- Deskripsi -->
-                <div class="row">
-                    <div class="col-12 col-md-7 text-light" style="z-index: 1;">
-                        <p>Ekstrakurikuler adalah kegiatan di luar pelajaran yang membantu siswa berkembang secara sosial dan akademik.</p>
-                        <a href="<?= base_url('ekskul/show') ?>" class="btn btn-primary mt-4">Tampilkan Selengkapnya</a>
+                    <!-- Card Ekstrakurikuler -->
+                    <div class="col-12 col-md-8">
+                        <div class="row justify-content-center">
+                            <?php foreach (array_slice($ekskul_preview, 0, 4) as $eks): ?>
+                                <div class="col-12 col-sm-6 col-lg-6 col-xl-3 mb-4">
+                                    <div class="card h-100 shadow-sm border-0" style="border-radius: 12px;">
+                                        <img src="<?= base_url('images/ekskul/' . $eks->image) ?>" class="card-img-top" alt="<?= $eks->judul ?>" style="height: 180px; object-fit: cover; border-radius: 12px 12px 0 0;">
+                                        <div class="card-body text-center p-3" style="background-color: #f8f9fa; border-radius: 0 0 12px 12px;">
+                                            <h6 class="card-title text-dark mb-0" style="font-size: 15px; font-weight: 600;"><?= $eks->judul ?></h6>
+                                            <!-- Tambahkan nama penanggung jawab -->
+                                            <p class="text-muted mb-0" style="font-size: 13px;">
+                                                Penanggung Jawab ekskul <?= $eks->nama_guru ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </section>
     <?php endif; ?>
+
 
 
 
@@ -174,9 +185,11 @@
                                         <h5 class="post-title" style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">
                                             <?= $item->judul ?>
                                         </h5>
-                                        <p class="post-content" style="font-size: 14px; color: #555;">
+                                        <p class="post-content" style="font-size: 14px; color: #000;">
                                             <?= strip_tags($item->deskripsi) ?>
                                         </p>
+                                        <p class="card-text small text-muted ">Penanggung Jawab: <?= $item->nama_guru ?></p>
+
                                     </div>
                                 </div>
                             </div>
@@ -201,7 +214,7 @@
                             <div class="card" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); height: 350px;">
                                 <img src="<?= base_url('images/galeri/' . $g->image) ?>" class="card-img-top" alt="<?= $g->judul ?>" style="height: 200px; object-fit: cover;">
                                 <div class="card-body">
-                                    <h5 class="card-title" style="font-family: Lexend Giga;">
+                                    <h5 class="post-title mb-2" style="font-size: 18px; font-weight: bold;">
                                         <?= $g->judul ?>
                                     </h5>
                                 </div>
@@ -229,7 +242,7 @@
             <div class="row g-4">
                 <!-- Informasi Kontak -->
                 <div class="col-md-6">
-                    <div class="p-4 rounded bg-secondary h-100 shadow-sm">
+                    <div class="p-4 rounded bg-dark h-100 shadow-sm">
                         <h4 class="mb-4">Informasi Kontak</h4>
                         <ul class="list-unstyled fs-6">
                             <li class="mb-3 d-flex align-items-start">
@@ -274,7 +287,6 @@
     </main>
 
 
-
     <!-- Footer -->
     <footer class="text-dark bg-light py-3">
         <div class="container text-center">
@@ -282,41 +294,5 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const counters = document.querySelectorAll("strong[id$='-count']");
 
-            function animateCounter(counter) {
-                const target = +counter.getAttribute("data-target");
-                let current = 0;
-                const increment = Math.ceil(target / 100); // Kecepatan peningkatan angka
-                const duration = 2000; // Durasi animasi dalam ms (2 detik)
-                const intervalTime = duration / (target / increment);
-
-                function updateCounter() {
-                    current += increment;
-                    if (current >= target) {
-                        counter.innerText = target; // Pastikan nilai akhir sesuai target
-                    } else {
-                        counter.innerText = current;
-                        setTimeout(updateCounter, intervalTime);
-                    }
-                }
-
-                updateCounter();
-            }
-
-            function handleScrollAnimation() {
-                counters.forEach(counter => {
-                    const rect = counter.getBoundingClientRect();
-                    if (rect.top < window.innerHeight && counter.innerText === "0") {
-                        animateCounter(counter);
-                    }
-                });
-            }
-
-            window.addEventListener("scroll", handleScrollAnimation);
-            handleScrollAnimation(); // Menjalankan animasi jika elemen sudah terlihat saat halaman dimuat
-        });
-    </script>
     </main>

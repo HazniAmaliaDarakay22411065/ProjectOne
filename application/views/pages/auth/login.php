@@ -1,6 +1,6 @@
  <style>
      body {
-         background: linear-gradient(135deg, rgb(20, 43, 88), #ffffff);
+
          height: 100vh;
          display: flex;
          justify-content: center;
@@ -77,7 +77,7 @@
      }
  </style>
  <main>
-     <section class="login-box">
+     <section class="login-box" style="padding-top: 80px;">
          <?php $this->load->view('layouts/_alert') ?>
          <div class="login-container d-flex">
 

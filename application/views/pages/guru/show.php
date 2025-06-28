@@ -1,143 +1,94 @@
 <div class="container bg-light text-dark" style="max-width: 800px; margin: 0 auto; margin-top: 10rem; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);">
     <div class="container-galeri text-center">
-        <h3 style="font-family: 'Rowdies', serif; font-weight: bold; color: #343a40;">GURU, STAF DAN PPPK</h3>
+        <h3 style="font-family: 'Rowdies', serif; font-weight: bold; color: #343a40;">GURU DAN TENAGA PENDIDIK</h3>
         <hr style="border-top: 2px solid #343a40; width: 50%; margin: 0 auto;">
     </div>
 </div>
 
-<div class="container center-container" style="display: flex;flex-direction: column;justify-content: center; align-items: center;">
-    <div class="container mt-5 d-flex flex-column align-items-center">
-        <!-- Card Kepala Sekolah -->
-        <?php if (!empty($kepala_sekolah)) : ?>
-            <?php foreach ($kepala_sekolah as $row) : ?>
-                <div class="card mb-4" style="width: 20rem; height: auto;">
-                    <img src="<?= $row->image ? base_url("images/guru/$row->image") : base_url("images/user/avatar.png") ?>" alt="<?= $row->nama ?>" class="card-img-top" />
-                    <div class="card-body text-center">
-                        <h5 class="card-title"><?= $row->nama ?></h5>
-                        <p class="card-text"><?= $row->jabatan ?> SMP NEGERI 11 JAYAPURA</p>
+<div class="container my-5">
+
+    <div class="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+
+        <?php foreach ($guru as $g) : ?>
+            <div class="col d-flex justify-content-center">
+                <div class="card shadow-sm border-0 rounded-4 text-center h-100" style="max-width: 260px; width: 100%;">
+
+                    <!-- FOTO UTUH -->
+                    <div class="p-3">
+                        <img src="<?= base_url('images/guru/' . $g->foto) ?>"
+                            class="rounded-circle shadow"
+                            alt="<?= $g->nama ?>"
+                            style="width: 110px; height: 110px; object-fit: cover;">
                     </div>
+
+                    <!-- NAMA DAN DESKRIPSI -->
+                    <div class="card-body pt-0">
+                        <h6 class="card-title mb-1 fw-bold"><?= $g->nama ?></h6>
+                        <p class="card-text small text-muted"><?= character_limiter(strip_tags($g->deskripsi), 100) ?></p>
+                    </div>
+
                 </div>
-            <?php endforeach; ?>
-        <?php else : ?>
-            <p class="text-muted">Data Kepala Sekolah tidak tersedia.</p>
-        <?php endif; ?>
-    </div>
+            </div>
+        <?php endforeach; ?>
 
-    <!-- Guru Tetap -->
-    <div class="container mt-5">
-        <h4 class="text-center text-light" style="font-family: Lexend Giga;">GURU TETAP</h4>
-        <hr style="border-top: 2px solid #ffff; width: 50%; margin: 0 auto;">
-        <div class="row mt-5">
-            <?php if (!empty($guru_tetap)) : ?>
-                <?php foreach ($guru_tetap as $row) : ?>
-                    <div class="col-md-3 col-sm-6 mb-4">
-                        <div class="card h-100">
-                            <img src="<?= $row->image ? base_url("images/guru/$row->image") : base_url("images/user/avatar.png") ?>" alt="<?= $row->nama ?>" class="card-img-top" />
-                            <div class="card-body text-center">
-                                <h5 class="card-title"><?= $row->nama ?></h5>
-                                <p class="card-text"><?= $row->mapel ?></p>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php else : ?>
-                <p class="text-muted text-center">Data Guru Tetap tidak tersedia.</p>
-            <?php endif; ?>
-        </div>
-    </div>
-
-    <!-- Guru PPPK -->
-    <div class="container mt-5">
-        <h4 class="text-center text-light" style="font-family: Lexend Giga;">GURU PPPK</h4>
-        <hr style="border-top: 2px solid #ffff; width: 50%; margin: 0 auto;">
-        <div class="row mt-5">
-            <?php if (!empty($guru_honorer)) : ?>
-                <?php foreach ($guru_honorer as $row) : ?>
-                    <div class="col-md-3 col-sm-6 mb-4">
-                        <div class="card h-100">
-                            <img src="<?= $row->image ? base_url("images/guru/$row->image") : base_url("images/user/avatar.png") ?>" alt="<?= $row->nama ?>" class="card-img-top" />
-                            <div class="card-body text-center">
-                                <h5 class="card-title"><?= $row->nama ?></h5>
-                                <p class="card-text"><?= $row->mapel ?></p>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php else : ?>
-                <p class="text-muted text-center">Data Guru PPPK tidak tersedia.</p>
-            <?php endif; ?>
-        </div>
     </div>
 </div>
 
-<!-------kontak------>
-<main id="kontak" class="py-5">
-    <div class="container mt-5 text-light">
-        <h2 class="text-center mb-5" style="font-family: Lexend Giga;">Kontak Sekolah</h2>
-        <div class="row">
+
+
+
+
+
+<main id="kontak" class="py-5  text-light">
+    <div class="container mt-5">
+        <h2 class="text-center mb-5" style="font-family: 'Lexend Giga'; font-weight: bold;">Kontak Sekolah</h2>
+        <div class="row g-4">
             <!-- Informasi Kontak -->
-            <div class="col-md-4 mb-4">
-                <h4 class="mb-3">Informasi Kontak</h4>
-                <ul class="list-unstyled">
-                    <li class="mb-3">
-                        <i class="bi bi-geo-alt-fill text-primary contact-icon"></i>
-                        <strong> Alamat:</strong> Jl. Mambruk Perumnas III Yabansai, <br> Yabansai, Kec. Heram, Kota Jayapura Prov. Papua
-                    </li>
-                    <li class="mb-3">
-                        <i class="bi bi-telephone-fill text-success contact-icon"></i>
-                        <strong> Telepon:</strong> (0987) 654-321
-                    </li>
-                    <li class="mb-3">
-                        <i class="bi bi-envelope-fill text-warning contact-icon"></i>
-                        <strong> Email:</strong> smpn11jayapura@gmail.com
-                    </li>
-                    <li class="mb-5">
-                        <i class="bi bi-clock-fill text-danger contact-icon"></i>
-                        <strong> Jam Operasional:</strong> Senin - Jumat, 07.00 - 15.00 WIT
-                    </li>
-                </ul>
-                <h4 class="mb-3">Ikuti Kami</h4>
-                <div class="d-flex gap-2">
-                    <a href="#" class="btn btn-primary btn-sm">
-                        <i class="bi bi-facebook"></i> Facebook
-                    </a>
-                    <a href="#" class="btn btn-info btn-sm">
-                        <i class="bi bi-instagram"></i> Instagram
-                    </a>
-                    <a href="#" class="btn btn-danger btn-sm">
-                        <i class="bi bi-youtube"></i> YouTube
-                    </a>
+            <div class="col-md-6">
+                <div class="p-4 rounded bg-dark h-100 shadow-sm">
+                    <h4 class="mb-4">Informasi Kontak</h4>
+                    <ul class="list-unstyled fs-6">
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-geo-alt-fill text-primary me-2 fs-5"></i>
+                            <div>
+                                <strong>Alamat:</strong>
+                                Jl. Mambruk Perumnas III Yabansai,<br> Yabansai, Kec. Heram, Kota Jayapura, Papua
+                            </div>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-telephone-fill text-success me-2 fs-5"></i>
+                            <div><strong>Telepon:</strong> (0987) 654-321</div>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-envelope-fill text-warning me-2 fs-5"></i>
+                            <div><strong>Email:</strong> smpn11jayapura@gmail.com</div>
+                        </li>
+                        <li class="mb-4 d-flex align-items-start">
+                            <i class="bi bi-clock-fill text-danger me-2 fs-5"></i>
+                            <div><strong>Jam Operasional:</strong> Senin - Jumat, 07.00 - 15.00 WIT</div>
+                        </li>
+                    </ul>
+
+                    <h4 class="mb-3">Ikuti Kami</h4>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-light btn-sm shadow-sm"><i class="bi bi-facebook me-1"></i>Facebook</a>
+                        <a href="#" class="btn btn-outline-light btn-sm shadow-sm"><i class="bi bi-instagram me-1"></i>Instagram</a>
+                        <a href="#" class="btn btn-outline-light btn-sm shadow-sm"><i class="bi bi-youtube me-1"></i>YouTube</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Form Kontak -->
-            <div class="col-md-4 mb-4">
-                <h4 class="mb-3">Kirim Pesan</h4>
-                <form>
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nama</label>
-                        <input type="text" class="form-control" id="name" placeholder="Masukkan nama Anda">
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="Masukkan email Anda">
-                    </div>
-                    <div class="mb-3">
-                        <label for="message" class="form-label">Pesan</label>
-                        <textarea class="form-control" id="message" rows="3" placeholder="Tulis pesan Anda di sini"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Kirim</button>
-                </form>
-            </div>
-
             <!-- Peta Lokasi -->
-            <div class="col-md-4 mb-4">
-                <h4 class="mb-3">Lokasi Sekolah</h4>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3985.760842940443!2d140.64319677405308!3d-2.5841988973938994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x686cf5d7adae6081%3A0x6695562d4497ed95!2sSMP%20Negeri%2011%20Jayapura!5e0!3m2!1sid!2sid!4v1737919491496!5m2!1sid!2sid" width="100%" height="320" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="col-md-6">
+                <div class="p-2 rounded shadow-sm">
+                    <h4 class="mb-3">Lokasi Sekolah</h4>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3985.760842940443!2d140.64319677405308!3d-2.5841988973938994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x686cf5d7adae6081%3A0x6695562d4497ed95!2sSMP%20Negeri%2011%20Jayapura!5e0!3m2!1sid!2sid!4v1737919491496!5m2!1sid!2sid" width="100%" height="350" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
             </div>
         </div>
     </div>
 </main>
+
 
 
 <!-- Footer -->

@@ -9,7 +9,6 @@ class Galeri extends MY_Controller
         parent::__construct();
         $this->load->model('Galeri_model', 'galeri');
 
-        // Hanya batasi akses jika bukan method 'show'
         if ($this->router->fetch_method() !== 'show') {
             if ($this->session->userdata('role') != 'admin') {
                 redirect(base_url('/'));
@@ -18,7 +17,6 @@ class Galeri extends MY_Controller
         }
     }
 
-    // Tampilan untuk admin (CRUD)
     public function index($page = null)
     {
         $data['title']        = 'Admin: Galeri';
@@ -34,7 +32,6 @@ class Galeri extends MY_Controller
         $this->viewAdmin($data);
     }
 
-    // Method untuk mencari galeri berdasarkan judul
     public function search($page = null)
     {
         if (isset($_POST['keyword'])) {
@@ -46,10 +43,7 @@ class Galeri extends MY_Controller
         $keyword = $this->session->userdata('keyword');
 
         $data['title']        = 'Admin: Galeri';
-        $data['content']      = $this->galeri
-            ->like('judul', $keyword)
-            ->paginate($page)
-            ->get();
+        $data['content']      = $this->galeri->like('judul', $keyword)->paginate($page)->get();
         $data['total_rows']   = $this->galeri->like('judul', $keyword)->count();
         $data['pagination']   = $this->galeri->makePagination(
             base_url('galeri/search'),
@@ -61,18 +55,17 @@ class Galeri extends MY_Controller
         $this->viewAdmin($data);
     }
 
-    // Reset pencarian
     public function reset()
     {
         $this->session->unset_userdata('keyword');
         redirect(base_url('galeri'));
     }
 
-    // Form tambah galeri
     public function create()
     {
         if (!$_POST) {
             $input = (object) $this->galeri->getDefaultValues();
+            $input->id_galeri = $this->galeri->getKodeGaleri(); // ID otomatis
         } else {
             $input = (object) $this->input->post(null, true);
         }
@@ -97,6 +90,10 @@ class Galeri extends MY_Controller
             return;
         }
 
+        if (!isset($input->id_galeri) || empty($input->id_galeri)) {
+            $input->id_galeri = $this->galeri->getKodeGaleri();
+        }
+
         if ($this->galeri->create($input)) {
             $this->session->set_flashdata('success', 'Data berhasil disimpan!');
         } else {
@@ -106,10 +103,9 @@ class Galeri extends MY_Controller
         redirect(base_url('galeri'));
     }
 
-    // Form edit galeri
     public function edit($id)
     {
-        $data['content'] = $this->galeri->where('id', $id)->first();
+        $data['content'] = $this->galeri->where('id_galeri', $id)->first();
 
         if (!$data['content']) {
             $this->session->set_flashdata('warning', 'Data tidak ditemukan!');
@@ -145,7 +141,7 @@ class Galeri extends MY_Controller
             return;
         }
 
-        if ($this->galeri->where('id', $id)->update($data['input'])) {
+        if ($this->galeri->where('id_galeri', $id)->update($data['input'])) {
             $this->session->set_flashdata('success', 'Data berhasil diubah!');
         } else {
             $this->session->set_flashdata('error', 'Oops! Terjadi kesalahan.');
@@ -154,23 +150,22 @@ class Galeri extends MY_Controller
         redirect(base_url('galeri'));
     }
 
-    // Hapus galeri
     public function delete($id)
     {
         if (!$_POST) {
             redirect(base_url('galeri'));
         }
 
-        $galeri = $this->galeri->where('id', $id)->first();
+        $galeri = $this->galeri->where('id_galeri', $id)->first();
 
         if (!$galeri) {
             $this->session->set_flashdata('warning', 'Data tidak ditemukan!');
             redirect(base_url('galeri'));
         }
 
-        if ($this->galeri->where('id', $id)->delete()) {
-            if (!empty($galeri->image) && file_exists("./images/galeri/$galeri->image")) {
-                unlink("./images/galeri/$galeri->image");
+        if ($this->galeri->where('id_galeri', $id)->delete()) {
+            if (!empty($galeri->image) && file_exists("./images/galeri/{$galeri->image}")) {
+                unlink("./images/galeri/{$galeri->image}");
             }
 
             $this->session->set_flashdata('success', 'Data berhasil dihapus!');
@@ -181,17 +176,15 @@ class Galeri extends MY_Controller
         redirect(base_url('galeri'));
     }
 
-    // Tampilan galeri untuk umum
     public function show()
     {
         $data['title']   = 'Galeri Sekolah';
-        $data['galeri']  = $this->galeri->orderBy('id', 'DESC')->get(); // Ambil semua data
+        $data['galeri']  = $this->galeri->orderBy('id_galeri', 'DESC')->get();
         $data['page']    = 'pages/galeri/show';
 
         $this->view($data);
     }
 
-    // Callback untuk validasi gambar wajib diisi saat create
     public function image_required()
     {
         if (empty($_FILES['image']['name'])) {

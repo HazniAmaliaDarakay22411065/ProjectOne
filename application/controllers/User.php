@@ -34,7 +34,7 @@ class User extends MY_Controller
         );
         $data['page']        = 'pages/user/index';
 
-        $this->view($data);
+        $this->viewAdmin($data);
     }
 
     public function search($page = null)
@@ -60,7 +60,7 @@ class User extends MY_Controller
         );
         $data['page']        = 'pages/user/index';
 
-        $this->view($data);
+        $this->viewAdmin($data);
     }
 
     public function reset()
@@ -96,7 +96,7 @@ class User extends MY_Controller
             $data['form_action']    = base_url('user/create');
             $data['page']            = 'pages/user/form';
 
-            $this->view($data);
+            $this->viewAdmin($data);
             return;
         }
 
@@ -148,7 +148,7 @@ class User extends MY_Controller
             $data['form_action']    = base_url("user/edit/$id");
             $data['page']            = 'pages/user/form';
 
-            $this->view($data);
+            $this->viewAdmin($data);
             return;
         }
 

@@ -1,7 +1,34 @@
-<main role="main" class="container" style="padding-top: 150px;">
-    <div class="row">
+<!-- Breadcrumb Full Width & Menarik -->
+<div class="w-100 position-relative" style="top: 0; left: 0; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 1000; font-family: 'Kanit', sans-serif;">
+    <div class="d-flex align-items-center px-3 py-2 flex-wrap">
+        <nav aria-label="breadcrumb" class="flex-grow-1">
+            <ol class="breadcrumb mb-0">
+                <!-- Link ke Dashboard -->
+                <li class="breadcrumb-item">
+                    <a href="<?= base_url('dashboard') ?>" class="text-dark d-flex align-items-center">
+                        <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                    </a>
+                </li>
+
+                <!-- Jika ada segment ke-2, tampilkan -->
+                <?php if ($this->uri->segment(2)) : ?>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="fas fa-angle-right me-1"></i> <?= ucwords(str_replace('_', ' ', $this->uri->segment(2))) ?>
+                    </li>
+                <?php else : ?>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="fas fa-angle-right me-1"></i> <?= isset($title) ? $title : 'Dashboard' ?>
+                    </li>
+                <?php endif; ?>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<main role="main" class="container">
+    <div class=" row">
         <div class="col-md-10 mx-auto">
-            <div class="card mb-3">
+            <div class="card border border-light shadow-lg rounded-4" style="transition: all 0.3s;">
                 <div class="card-header">
                     <span>Formulir Pengguna</span>
                 </div>

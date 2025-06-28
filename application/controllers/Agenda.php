@@ -29,7 +29,7 @@ class Agenda extends MY_Controller
         );
         $data['page']       = 'pages/agenda/index';
 
-        $this->view($data);
+        $this->viewAdmin($data);
     }
 
     public function search($page = null)
@@ -50,7 +50,7 @@ class Agenda extends MY_Controller
         );
         $data['page']       = 'pages/agenda/index';
 
-        $this->view($data);
+        $this->viewAdmin($data);
     }
 
     public function reset()
@@ -83,7 +83,7 @@ class Agenda extends MY_Controller
             $data['form_action'] = base_url('agenda/create');
             $data['page']        = 'pages/agenda/form';
 
-            $this->view($data);
+            $this->viewAdmin($data);
             return;
         }
 
@@ -132,7 +132,7 @@ class Agenda extends MY_Controller
             $data['form_action'] = base_url("agenda/edit/$id");
             $data['page']        = 'pages/agenda/form';
 
-            $this->view($data);
+            $this->viewAdmin($data);
             return;
         }
 
@@ -191,7 +191,7 @@ class Agenda extends MY_Controller
         $data['title'] = $data['agenda']->judul;
         $data['page']  = 'pages/agenda/detail';
 
-        $this->view($data);
+        $this->viewAdmin($data);
     }
 
     public function image_required()

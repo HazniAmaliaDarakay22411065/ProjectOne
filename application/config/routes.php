@@ -58,7 +58,14 @@ $route['translate_uri_dashes'] = FALSE;
 $route['user/(:num)']    = 'user/index/$1';
 
 $route['guru/(:num)'] = 'guru/index/$1'; // untuk pagination
+$route['galeri/(:num)'] = 'galeri/index/$1'; // untuk pagination
+$route['pengumuman/(:num)'] = 'pengumuman/index/$1'; // untuk pagination
+$route['prestasi/(:num)'] = 'prestasi/index/$1'; // untuk pagination
 
 $route['visi_misi/(:num)'] = 'visi_misi/index/$1'; // untuk pagination
 $route['ekskul/(:num)'] = 'ekskul/index/$1'; // untuk pagination
 $route['kegiatan_masyarakat/(:num)'] = 'kegiatan_masyarakat/index/$1'; // untuk pagination
+$route['profil/(:num)']    = 'profil/index/$1';
+$route['sambutan/(:num)']    = 'sambutan/index/$1';
+$route['kelas/(:num)']    = 'kelas/index/$1';
+$route['siswa/(:num)']    = 'siswa/index/$1';

@@ -13,8 +13,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Rowdies:wght@300;400;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
     <link rel="stylesheet" href="<?php echo base_url('assets/css/app.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/java/java.js'); ?>">
+
 </head>
 
 <body>
@@ -40,7 +41,6 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./home.js"></script>
 
 
 </body>

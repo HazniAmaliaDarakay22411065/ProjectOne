@@ -1,4 +1,4 @@
-<div class="container d-flex justify-content-center align-items-center vh-100 pt-5">
+<div class="container d-flex justify-content-center align-items-center vh-100 pt-5" style="margin-top: 30px;">
     <div class="d-flex bg-white p-4 rounded-4 shadow" style="max-width: 700px; width: 100%;">
 
         <!-- Gambar -->
@@ -8,9 +8,11 @@
 
         <!-- Form -->
         <div class="flex-fill">
+            <?php $this->load->view('layouts/_alert') ?>
+
             <h4 class="mb-3">Registrasi Akun</h4>
 
-            <?= form_open('register', ['method' => 'POST']) ?>
+            <?= form_open('register', ['method' => 'POST', 'novalidate' => 'novalidate']) ?>
 
             <div class="mb-2">
                 <label for="fullname" class="form-label">Nama Lengkap</label>
@@ -20,7 +22,7 @@
                         'class' => 'form-control ' . (form_error('name') ? 'is-invalid' : ''),
                         'id' => 'fullname',
                         'placeholder' => 'Masukkan nama',
-                        'required' => true
+                        // 'required' => true
                     ]) ?>
                     <?php if (form_error('name')) : ?>
                         <div class="invalid-feedback"><?= form_error('name') ?></div>
@@ -35,7 +37,6 @@
                     <?= form_input('email', set_value('email', $input->email), [
                         'type' => 'email',
                         'class' => 'form-control ' . (form_error('email') ? 'is-invalid' : ''),
-                        'id' => 'email',
                         'placeholder' => 'Masukkan email',
                         'required' => true
                     ]) ?>
@@ -74,8 +75,16 @@
                     <?php if (form_error('password_confirmation')) : ?>
                         <div class="invalid-feedback"><?= form_error('password_confirmation') ?></div>
                     <?php endif ?>
+
+                    <?php if ($this->session->flashdata('password_errors')) : ?>
+                        <?php foreach ($this->session->flashdata('password_errors') as $err) : ?>
+                            <div class="invalid-feedback d-block"><?= $err ?></div>
+                        <?php endforeach ?>
+                    <?php endif ?>
                 </div>
             </div>
+
+
 
             <button type="submit" class="btn btn-primary rounded-pill w-100 mt-2">Registrasi</button>
             <div class="text-center mt-2">
