@@ -118,17 +118,3 @@
              </div>
          </div>
  </main>
- <script>
-     // Toggle Password Visibility
-     const togglePassword = document.querySelector("#togglePassword");
-     const passwordInput = document.querySelector("input[name='password']");
-     const eyeIcon = document.getElementById("eyeIcon");
-
-     togglePassword.addEventListener("click", function() {
-         const type = passwordInput.type === "password" ? "text" : "password";
-         passwordInput.type = type;
-
-         // Toggle the eye icon
-         eyeIcon.classList.toggle("bi-eye-slash");
-     });
- </script>

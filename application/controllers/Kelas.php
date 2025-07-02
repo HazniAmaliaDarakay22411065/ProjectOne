@@ -31,12 +31,13 @@ class Kelas extends MY_Controller
 
     public function create()
     {
-        if (!$_POST) {
-            $input = (object) $this->kelas->getDefaultValues();
-            $input->id_kelas = $this->kelas->generateIdKelas(); // ID otomatis
-        } else {
-            $input = (object) $this->input->post(null, true);
-            $input->id_kelas = $this->kelas->generateIdKelas(); // Pastikan ID tidak kosong
+        $input = !$_POST ? (object) $this->kelas->getDefaultValues() : (object) $this->input->post(null, true);
+        $input->id_kelas = $this->kelas->generateIdKelas();
+
+        if (!$this->kelas->isUnique('nama_kelas', $input->nama_kelas)) {
+            $this->session->set_flashdata('error', 'Nama kelas sudah ada, silakan gunakan nama lain.');
+            redirect(base_url('kelas/create'));
+            return;
         }
 
         if (!$this->kelas->validate()) {
@@ -44,8 +45,7 @@ class Kelas extends MY_Controller
             $data['input']        = $input;
             $data['form_action']  = base_url('kelas/create');
             $data['page']         = 'pages/kelas/form';
-            $this->viewAdmin($data);
-            return;
+            return $this->viewAdmin($data);
         }
 
         if ($this->kelas->create($input)) {
@@ -57,6 +57,7 @@ class Kelas extends MY_Controller
         redirect(base_url('kelas'));
     }
 
+
     public function edit($id)
     {
         $kelas = $this->kelas->where('id_kelas', $id)->first();
@@ -66,10 +67,16 @@ class Kelas extends MY_Controller
             redirect(base_url('kelas'));
         }
 
-        if (!$_POST) {
-            $input = $kelas;
-        } else {
-            $input = (object) $this->input->post(null, true);
+        $input = !$_POST ? $kelas : (object) $this->input->post(null, true);
+
+        // Cek unik hanya jika nama_kelas diubah
+        if (
+            $this->input->post('nama_kelas') != $kelas->nama_kelas &&
+            !$this->kelas->isUnique('nama_kelas', $this->input->post('nama_kelas'), $id)
+        ) {
+            $this->session->set_flashdata('error', 'Nama kelas sudah digunakan.');
+            redirect(base_url("kelas/edit/$id"));
+            return;
         }
 
         if (!$this->kelas->validate()) {
@@ -77,8 +84,7 @@ class Kelas extends MY_Controller
             $data['input']        = $input;
             $data['form_action']  = base_url("kelas/edit/$id");
             $data['page']         = 'pages/kelas/form';
-            $this->viewAdmin($data);
-            return;
+            return $this->viewAdmin($data);
         }
 
         if ($this->kelas->update($id, $input)) {
@@ -89,6 +95,7 @@ class Kelas extends MY_Controller
 
         redirect(base_url('kelas'));
     }
+
 
     public function delete($id)
     {

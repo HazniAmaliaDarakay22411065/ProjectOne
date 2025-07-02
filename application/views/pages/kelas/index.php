@@ -27,6 +27,7 @@
 
 
 <main role="main" class="container-fluid">
+    <?php $this->load->view('layouts/_alert') ?>
     <div class="row justify-content-center">
         <div class="col-lg-12 mt-4">
             <div class="card border border-light shadow-lg rounded-4">
@@ -40,8 +41,6 @@
                                 <i class="fas fa-plus"></i> Tambah
                             </a>
                         </div>
-
-
 
                         <!-- Pencarian (opsional, jika kamu buat method search kelas) -->
                         <form action="<?= base_url("kelas/search") ?>" method="POST" class="d-flex align-items-center gap-2">
@@ -58,60 +57,50 @@
                     </div>
                 </div>
 
-                <!-- Body -->
-                <div class="card-body">
-                    <?php if ($this->session->flashdata('success')) : ?>
-                        <div class="alert alert-success"><?= $this->session->flashdata('success') ?></div>
-                    <?php elseif ($this->session->flashdata('error')) : ?>
-                        <div class="alert alert-danger"><?= $this->session->flashdata('error') ?></div>
-                    <?php elseif ($this->session->flashdata('warning')) : ?>
-                        <div class="alert alert-warning"><?= $this->session->flashdata('warning') ?></div>
-                    <?php endif; ?>
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover align-middle">
-                            <thead class="table-light text-center">
-                                <tr>
-                                    <th style="width: 40px;">No</th>
-                                    <th>ID Kelas</th>
-                                    <th>Nama Kelas</th>
-                                    <th style="width: 100px;">Aksi</th>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th style="width: 40px;">No</th>
+                                <th>ID Kelas</th>
+                                <th>Nama Kelas</th>
+                                <th style="width: 100px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $no = 1;
+                            foreach ($content as $row) : ?>
+                                <tr class="text-center">
+                                    <td><?= $no++ ?></td>
+                                    <td><?= $row->id_kelas ?></td>
+                                    <td class="text-center"><?= $row->nama_kelas ?></td>
+                                    <td>
+                                        <a href="<?= base_url("kelas/edit/$row->id_kelas") ?>" class="btn btn-sm">
+                                            <i class="fas fa-edit text-info"></i>
+                                        </a>
+                                        <form action="<?= base_url("kelas/delete/$row->id_kelas") ?>" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kelas ini?')">
+                                            <button class="btn btn-sm" type="submit">
+                                                <i class="fas fa-trash text-danger"></i>
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <?php $no = 1;
-                                foreach ($content as $row) : ?>
-                                    <tr class="text-center">
-                                        <td><?= $no++ ?></td>
-                                        <td><?= $row->id_kelas ?></td>
-                                        <td class="text-center"><?= $row->nama_kelas ?></td>
-                                        <td>
-                                            <a href="<?= base_url("kelas/edit/$row->id_kelas") ?>" class="btn btn-sm">
-                                                <i class="fas fa-edit text-info"></i>
-                                            </a>
-                                            <form action="<?= base_url("kelas/delete/$row->id_kelas") ?>" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kelas ini?')">
-                                                <button class="btn btn-sm" type="submit">
-                                                    <i class="fas fa-trash text-danger"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                <?php endforeach ?>
+                            <?php endforeach ?>
 
-                                <?php if (empty($content)) : ?>
-                                    <tr>
-                                        <td colspan="4" class="text-center">Belum ada data kelas.</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                        <!-- Navigasi Pagination -->
-                        <nav aria-label="Page navigation">
-                            <?= $pagination ?>
-                        </nav>
-                    </div>
+                            <?php if (empty($content)) : ?>
+                                <tr>
+                                    <td colspan="4" class="text-center">Belum ada data kelas.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                    <!-- Navigasi Pagination -->
+                    <nav aria-label="Page navigation">
+                        <?= $pagination ?>
+                    </nav>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </main>

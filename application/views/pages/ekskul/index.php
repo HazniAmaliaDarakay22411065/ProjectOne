@@ -27,6 +27,7 @@
 
 
 <main role="main" class="container py-5">
+    <?php $this->load->view('layouts/_alert') ?>
     <div class="row">
         <div class="col-md-10 mx-auto">
             <div class="card mb-3">

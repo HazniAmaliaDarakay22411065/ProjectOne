@@ -72,7 +72,7 @@
                     <h4 class="mb-3">Ikuti Kami</h4>
                     <div class="d-flex gap-2">
                         <a href="#" class="btn btn-outline-light btn-sm shadow-sm"><i class="bi bi-facebook me-1"></i>Facebook</a>
-                        <a href="#" class="btn btn-outline-light btn-sm shadow-sm"><i class="bi bi-instagram me-1"></i>Instagram</a>
+                        <a href="https://www.instagram.com/smpn11jpr?igsh=Nm00dWZrMTV2Z3Fz" class="btn btn-outline-light btn-sm shadow-sm"><i class="bi bi-instagram me-1"></i>Instagram</a>
                         <a href="#" class="btn btn-outline-light btn-sm shadow-sm"><i class="bi bi-youtube me-1"></i>YouTube</a>
                     </div>
                 </div>

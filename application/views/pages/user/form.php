@@ -28,6 +28,7 @@
 <main role="main" class="container">
     <div class=" row">
         <div class="col-md-10 mx-auto">
+            <?php $this->load->view('layouts/_alert') ?>
             <div class="card border border-light shadow-lg rounded-4" style="transition: all 0.3s;">
                 <div class="card-header">
                     <span>Formulir Pengguna</span>

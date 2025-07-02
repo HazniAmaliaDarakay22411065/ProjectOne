@@ -51,6 +51,8 @@
                 </div>
 
                 <div class="card-body">
+                    <?php $this->load->view('layouts/_alert') ?>
+
                     <table class="table table-bordered">
                         <thead>
                             <tr>

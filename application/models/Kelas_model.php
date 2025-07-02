@@ -43,4 +43,13 @@ class Kelas_model extends MY_Model
 
         return 'KLS' . str_pad($kode, 3, '0', STR_PAD_LEFT);
     }
+
+    public function isUnique($field, $value, $id_kelas = null)
+    {
+        $this->db->where($field, $value);
+        if ($id_kelas !== null) {
+            $this->db->where($this->primaryKey . ' !=', $id_kelas);
+        }
+        return $this->db->get($this->table)->num_rows() === 0;
+    }
 }

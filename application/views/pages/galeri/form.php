@@ -29,6 +29,7 @@
 
 
 <main role="main" class="container py-5">
+    <?php $this->load->view('layouts/_alert') ?>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card border border-light shadow-lg rounded-4" style="transition: all 0.3s;">

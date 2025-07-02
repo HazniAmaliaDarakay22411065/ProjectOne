@@ -13,7 +13,6 @@ class Guru extends MY_Controller
         $this->load->model('Guru_model', 'guru');
         $this->load->library('form_validation');
 
-
         if ($this->router->fetch_method() !== 'show') {
             if ($this->session->userdata('role') != 'admin') {
                 redirect(base_url('/'));
@@ -22,32 +21,24 @@ class Guru extends MY_Controller
         }
     }
 
-    // Validasi custom: NIP hanya angka
     public function validate_nip_numeric($nip)
     {
         if (!preg_match('/^[0-9]+$/', $nip)) {
-            $this->form_validation->set_message(
-                'validate_nip_numeric',
-                'NIP hanya boleh berisi angka.'
-            );
+            $this->form_validation->set_message('validate_nip_numeric', 'NIP hanya boleh berisi angka.');
             return false;
         }
         return true;
     }
 
-    // Validasi custom: Tempat lahir hanya huruf dan spasi
     public function validate_tempat_lahir_alpha($tempat_lahir)
     {
         if (!preg_match('/^[a-zA-Z\s]+$/', $tempat_lahir)) {
-            $this->form_validation->set_message(
-                'validate_tempat_lahir_alpha',
-                'Tempat lahir hanya boleh berisi huruf dan spasi.'
-            );
+            $this->form_validation->set_message('validate_tempat_lahir_alpha', 'Tempat lahir hanya boleh berisi huruf dan spasi.');
             return false;
         }
         return true;
     }
-    // Validasi custom: Tanggal lahir harus format YYYY-MM-DD
+
     public function valid_tanggal($date)
     {
         if (DateTime::createFromFormat('Y-m-d', $date) !== false) {
@@ -58,17 +49,12 @@ class Guru extends MY_Controller
         }
     }
 
-
     public function index($page = null)
     {
         $data['title']        = 'Admin: Data Guru';
         $data['content']      = $this->guru->paginate($page)->get();
         $data['total_rows']   = $this->guru->count();
-        $data['pagination']   = $this->guru->makePagination(
-            base_url('guru'),
-            2,
-            $data['total_rows']
-        );
+        $data['pagination']   = $this->guru->makePagination(base_url('guru'), 2, $data['total_rows']);
         $data['page']         = 'pages/guru/index';
 
         $this->viewAdmin($data);
@@ -76,18 +62,37 @@ class Guru extends MY_Controller
 
     public function create()
     {
-
-
         if (!$_POST) {
             $input = (object) $this->guru->getDefaultValues();
-            $input->id_guru = $this->guru->generateIdGuru(); // untuk tampilan awal form
+            $input->id_guru = $this->guru->generateIdGuru();
         } else {
             $input = (object) $this->input->post(null, true);
-            $input->id_guru = $this->guru->generateIdGuru(); // tambahkan ini agar disimpan ke DB
+            $input->id_guru = $this->guru->generateIdGuru();
         }
 
-        // Upload Foto
+        $this->form_validation->set_rules('tgl_lahir', 'Tanggal Lahir', 'required|callback_valid_tanggal');
 
+        if (!$this->guru->validate() || $this->form_validation->run() === false) { //validasi gagal
+            $data['title']        = 'Tambah Guru';
+            $data['input']        = $input;
+            $data['form_action']  = base_url('guru/create');
+            $data['page']         = 'pages/guru/form';
+            $this->viewAdmin($data);
+            return;
+        }
+
+        // Cek apakah NIP atau Nama sudah ada
+        if (!$this->guru->isUnique('nip', $input->nip)) {
+            $this->session->set_flashdata('error', 'NIP sudah terdaftar!');
+            redirect(base_url('guru/create'));
+            return;
+        }
+
+        if (!$this->guru->isUnique('nama', $input->nama)) {
+            $this->session->set_flashdata('error', 'Nama sudah terdaftar!');
+            redirect(base_url('guru/create'));
+            return;
+        }
 
         // Upload Foto
         if (!empty($_FILES['foto']['name'])) {
@@ -98,18 +103,6 @@ class Guru extends MY_Controller
             } else {
                 redirect(base_url('guru/create'));
             }
-        }
-
-        $this->form_validation->set_rules('tgl_lahir', 'Tanggal Lahir', 'required|callback_valid_tanggal');
-
-        if (!$this->guru->validate() || $this->form_validation->run() === false) {
-            $data['title']        = 'Tambah Guru';
-            $data['input']        = $input;
-            $data['form_action']  = base_url('guru/create');
-            $data['page']         = 'pages/guru/form';
-
-            $this->viewAdmin($data);
-            return;
         }
 
         if ($this->guru->create($input)) {
@@ -134,10 +127,9 @@ class Guru extends MY_Controller
             $data['input'] = $data['content'];
         } else {
             $post = (object) $this->input->post(null, true);
-            $data['input'] = (object) array_merge((array) $data['content'], (array) $post); // isi lama tetap, hanya ubah jika diedit
+            $data['input'] = (object) array_merge((array) $data['content'], (array) $post);
         }
 
-        // Upload foto jika ada
         if (!empty($_FILES['foto']['name'])) {
             $fileName = url_title($data['input']->nama, '-', true) . '-' . date('YmdHis');
             $upload = $this->guru->uploadImage('foto', $fileName);
@@ -154,7 +146,6 @@ class Guru extends MY_Controller
             }
         }
 
-        // Validasi yang diperlukan
         $this->form_validation->set_rules('nip', 'NIP', 'required|max_length[18]|callback_validate_nip_numeric');
         $this->form_validation->set_rules('tempat_lahir', 'Tempat Lahir', 'callback_validate_tempat_lahir_alpha');
         $this->form_validation->set_rules('tgl_lahir', 'Tanggal Lahir', 'required|callback_valid_tanggal');
@@ -167,6 +158,13 @@ class Guru extends MY_Controller
             return;
         }
 
+        // Cek duplikat NIP (kecuali miliknya sendiri)
+        if (!$this->guru->isUnique('nip', $data['input']->nip, $id)) {
+            $this->session->set_flashdata('error', 'NIP sudah digunakan oleh guru lain!');
+            redirect(base_url("guru/edit/$id"));
+            return;
+        }
+
         if ($this->guru->where('id_guru', $id)->update($data['input'])) {
             $this->session->set_flashdata('success', 'Data berhasil diubah!');
         } else {
@@ -175,7 +173,6 @@ class Guru extends MY_Controller
 
         redirect(base_url('guru'));
     }
-
 
     public function delete($id)
     {
@@ -189,13 +186,15 @@ class Guru extends MY_Controller
             $this->session->set_flashdata('warning', 'Data tidak ditemukan!');
             redirect(base_url('guru'));
         }
-        // if (!empty($guru->foto) && $guru->foto !== 'default.jpg' && file_exists("./images/guru/{$guru->foto}")) {
-        //     unlink("./images/guru/{$guru->foto}");
-        // }
 
         if ($this->guru->where('id_guru', $id)->delete()) {
-            if (!empty($guru->foto) && file_exists("./images/guru/{$guru->foto}")) {
-                unlink("./images/guru/{$guru->foto}");
+
+            // Jangan hapus jika fotonya adalah default
+            if (!empty($guru->foto) && $guru->foto !== 'default.jpg') {
+                $foto_path = FCPATH . "images/guru/{$guru->foto}";
+                if (file_exists($foto_path)) {
+                    unlink($foto_path);
+                }
             }
 
             $this->session->set_flashdata('success', 'Data berhasil dihapus!');
@@ -206,10 +205,9 @@ class Guru extends MY_Controller
         redirect(base_url('guru'));
     }
 
-    // method search
+
     public function search($page = null)
     {
-        // Simpan keyword ke session jika dikirim dari form
         if (isset($_POST['keyword'])) {
             $this->session->set_userdata('keyword', $this->input->post('keyword'));
         } else {
@@ -219,24 +217,10 @@ class Guru extends MY_Controller
         $keyword = $this->session->userdata('keyword');
 
         $data['title']      = 'Admin: Data Guru';
-        $data['content']    = $this->guru
-            ->like('nip', $keyword)
-            ->orLike('nama', $keyword)
-            ->paginate($page)
-            ->get();
-
-        $data['total_rows'] = $this->guru
-            ->like('nip', $keyword)
-            ->orLike('nama', $keyword)
-            ->count();
-
-        $data['pagination'] = $this->guru->makePagination(
-            base_url('guru/search'),
-            3,
-            $data['total_rows']
-        );
-
-        $data['page'] = 'pages/guru/index';
+        $data['content']    = $this->guru->like('nip', $keyword)->orLike('nama', $keyword)->paginate($page)->get();
+        $data['total_rows'] = $this->guru->like('nip', $keyword)->orLike('nama', $keyword)->count();
+        $data['pagination'] = $this->guru->makePagination(base_url('guru/search'), 3, $data['total_rows']);
+        $data['page']       = 'pages/guru/index';
 
         $this->viewAdmin($data);
     }
@@ -246,8 +230,6 @@ class Guru extends MY_Controller
         $this->session->unset_userdata('keyword');
         redirect(base_url('guru'));
     }
-
-
 
     public function import_excel()
     {
@@ -275,6 +257,12 @@ class Guru extends MY_Controller
 
             for ($i = 1; $i < count($sheet); $i++) {
                 $baris = $sheet[$i];
+
+                // Cek apakah nama atau nip sudah ada
+                if (!$this->guru->isUnique('nip', $baris[1]) || !$this->guru->isUnique('nama', $baris[0])) {
+                    continue;
+                }
+
                 $id_guru = 'GR' . str_pad($nomor_awal++, 3, '0', STR_PAD_LEFT);
 
                 $data_guru[] = [
@@ -301,7 +289,6 @@ class Guru extends MY_Controller
             redirect(base_url('guru'));
         }
     }
-
 
     public function show()
     {

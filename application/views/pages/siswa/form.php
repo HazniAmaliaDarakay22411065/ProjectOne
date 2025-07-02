@@ -23,6 +23,8 @@
 </div>
 
 <main role="main" class="container my-4">
+    <?php $this->load->view('layouts/_alert') ?>
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card border border-light shadow-lg rounded-4">

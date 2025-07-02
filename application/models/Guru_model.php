@@ -138,4 +138,16 @@ class Guru_model extends MY_Model
         $nextId = $lastId + 1;
         return 'GR' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
     }
+
+    public function isUnique($field, $value, $id_guru = null)
+    {
+        $this->db->where($field, $value);
+
+        // Jika sedang proses edit, abaikan baris dengan ID yang sedang diedit
+        if ($id_guru) {
+            $this->db->where($this->primaryKey . ' !=', $id_guru);
+        }
+
+        return $this->db->get($this->table)->num_rows() === 0;
+    }
 }

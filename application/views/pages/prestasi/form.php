@@ -27,6 +27,8 @@
 
 <!-- form.php untuk Prestasi (admin) -->
 <main role="main" class="container mt-3">
+    <?php $this->load->view('layouts/_alert') ?>
+
     <div class="row">
         <div class="col-md-8 mx-auto">
             <div class="card border border-light shadow-lg rounded-4">

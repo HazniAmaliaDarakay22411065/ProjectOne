@@ -23,6 +23,7 @@
 </div>
 
 <main role="main" class="container-fluid">
+    <?php $this->load->view('layouts/_alert') ?>
     <div class="row justify-content-center">
         <div class="col-lg-12 mt-4">
             <div class="card border border-light shadow-lg rounded-4">
@@ -48,7 +49,7 @@
                         <!-- Kolom Pencarian -->
                         <form action="<?= base_url("guru/search") ?>" method="POST" class="d-flex align-items-center gap-2">
                             <div class="input-group input-group-sm">
-                                <input type="text" name="keyword" class="form-control" placeholder="Cari Nama / Jabatan" value="<?= $this->session->userdata('keyword') ?>">
+                                <input type="text" name="keyword" class="form-control" placeholder="Cari NIP / Nama" value="<?= $this->session->userdata('keyword') ?>">
                                 <button class="btn btn-info" type="submit">
                                     <i class="fas fa-search"></i>
                                 </button>

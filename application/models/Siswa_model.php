@@ -81,4 +81,13 @@ class Siswa_model extends MY_Model
 
         return 'SW' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
     }
+
+    public function isUnique($field, $value, $id_siswa = null)
+    {
+        $this->db->where($field, $value);
+        if ($id_siswa) {
+            $this->db->where($this->primaryKey . ' !=', $id_siswa);
+        }
+        return $this->db->get($this->table)->num_rows() === 0;
+    }
 }

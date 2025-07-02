@@ -24,7 +24,9 @@
         </nav>
     </div>
 </div>
+
 <div class="container my-4">
+    <?php $this->load->view('layouts/_alert') ?>
     <div class="row justify-content-center">
         <div class="col-lg-9 col-md-10">
             <div class="card border-0 shadow-lg rounded-4">

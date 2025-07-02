@@ -75,6 +75,12 @@ class Galeri_model extends MY_Model
 
         return 'GA' . str_pad($kode, 3, '0', STR_PAD_LEFT);
     }
+
+    // allert 
+    public function create($data)
+    {
+        return $this->db->insert($this->table, $data);
+    }
 }
 
 /* End of file Myorder_model.php */

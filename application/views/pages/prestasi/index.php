@@ -55,6 +55,7 @@
                     </div>
 
                     <div class="card-body">
+                        <?php $this->load->view('layouts/_alert') ?>
                         <table class="table table-bordered table-sm align-middle">
                             <thead>
                                 <tr class="text-center">

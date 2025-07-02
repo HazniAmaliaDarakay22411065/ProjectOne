@@ -27,6 +27,7 @@
 
 
 <main role="main" class="container">
+    <?php $this->load->view('layouts/_alert') ?>
     <div class="row">
         <div class="col-md-10 mx-auto mt-5">
             <div class="card border border-light shadow-lg rounded-4" style="transition: all 0.3s;">

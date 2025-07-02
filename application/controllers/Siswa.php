@@ -23,7 +23,6 @@ class Siswa extends MY_Controller
         $data['total_rows'] = $this->siswa->count();
         $data['pagination'] = $this->siswa->makePagination(base_url('siswa'), 2, $data['total_rows']);
         $data['page']       = 'pages/siswa/index';
-
         $this->viewAdmin($data);
     }
 
@@ -32,10 +31,16 @@ class Siswa extends MY_Controller
         $input = !$_POST ? (object) $this->siswa->getDefaultValues() : (object) $this->input->post(null, true);
         $input->id_siswa = $this->siswa->generateIdSiswa();
 
+        if (!$this->siswa->isUnique('nis', $input->nis)) {
+            $this->session->set_flashdata('error', 'NIS sudah digunakan oleh siswa lain!');
+            redirect(base_url('siswa/create'));
+            return;
+        }
+
         if (!$this->siswa->validate()) {
             $data['title']       = 'Tambah Siswa';
             $data['input']       = $input;
-            $data['kelas']       = $this->kelas->get(); // dropdown kelas
+            $data['kelas']       = $this->kelas->get();
             $data['form_action'] = base_url('siswa/create');
             $data['page']        = 'pages/siswa/form';
             return $this->viewAdmin($data);
@@ -53,26 +58,18 @@ class Siswa extends MY_Controller
     public function edit($id)
     {
         $data['content'] = $this->siswa->where('id_siswa', $id)->first();
-
         if (!$data['content']) {
             $this->session->set_flashdata('warning', 'Data siswa tidak ditemukan.');
             redirect(base_url('siswa'));
         }
 
         $data['input'] = !$_POST ? $data['content'] : (object) $this->input->post(null, true);
-
-        // Load library form_validation
         $this->load->library('form_validation');
 
-        // Ambil nilai NIS dari form dan dari data lama
         $nis_input = $this->input->post('nis');
         $nis_lama  = $data['content']->nis;
 
-        // Tambahkan aturan is_unique hanya jika NIS berubah
-        $is_unique = ($nis_input != $nis_lama) ? '|is_unique[siswa.nis]' : '';
-
-        // Set rules manual (karena kita tidak pakai MY_Model->validate())
-        $this->form_validation->set_rules('nis', 'NIS', 'required|numeric|max_length[20]' . $is_unique);
+        $this->form_validation->set_rules('nis', 'NIS', 'required|numeric|max_length[20]');
         $this->form_validation->set_rules('nama_siswa', 'Nama Siswa', 'required|trim');
         $this->form_validation->set_rules('jenis_kelamin', 'Jenis Kelamin', 'required|in_list[P,L]');
         $this->form_validation->set_rules('id_kelas', 'Kelas', 'required');
@@ -85,6 +82,13 @@ class Siswa extends MY_Controller
             return $this->viewAdmin($data);
         }
 
+        // Cek unik jika NIS berubah
+        if ($nis_input != $nis_lama && !$this->siswa->isUnique('nis', $nis_input, $id)) {
+            $this->session->set_flashdata('error', 'NIS sudah digunakan oleh siswa lain!');
+            redirect(base_url("siswa/edit/$id"));
+            return;
+        }
+
         if ($this->siswa->where('id_siswa', $id)->update($data['input'])) {
             $this->session->set_flashdata('success', 'Data berhasil diperbarui!');
         } else {
@@ -93,7 +97,6 @@ class Siswa extends MY_Controller
 
         redirect(base_url('siswa'));
     }
-
 
     public function delete($id)
     {
@@ -135,9 +138,6 @@ class Siswa extends MY_Controller
             $sheet = $spreadsheet->getActiveSheet()->toArray();
 
             $data_siswa = [];
-            $this->load->model('Siswa_model', 'siswa');
-            $this->load->model('Kelas_model', 'kelas');
-
             $id_siswa_awal = $this->siswa->generateIdSiswaBerikutnya();
             $nomor_awal = intval(substr($id_siswa_awal, 2));
 
@@ -148,9 +148,8 @@ class Siswa extends MY_Controller
                 $nama_kelas = $baris[3];
                 $kelas = $this->kelas->where('nama_kelas', $nama_kelas)->first();
 
-                if (!$kelas) {
-                    continue; // skip jika nama kelas tidak ditemukan
-                }
+                if (!$kelas) continue;
+                if (!$this->siswa->isUnique('nis', $baris[1])) continue;
 
                 $data_siswa[] = [
                     'id_siswa'      => $id_siswa,
@@ -175,7 +174,6 @@ class Siswa extends MY_Controller
 
     public function search($page = null)
     {
-        // Cek apakah ada keyword dari form
         if (isset($_POST['keyword'])) {
             $this->session->set_userdata('keyword_siswa', $this->input->post('keyword'));
         } else {
@@ -202,7 +200,6 @@ class Siswa extends MY_Controller
         );
 
         $data['page'] = 'pages/siswa/index';
-
         $this->viewAdmin($data);
     }
 
