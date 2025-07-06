@@ -22,12 +22,35 @@ class Profil extends MY_Controller
 
     public function index()
     {
+        $profil = $this->profil->first();
+
+        // Cek jika data belum ada, buat otomatis PS001
+        if (!$profil) {
+            $dataBaru = [
+                'id_sekolah'    => $this->profil->generateIdSekolah(),
+                'nama_sekolah'  => '-',
+                'npsn'          => '00000000',
+                'jenjang'       => '-',
+                'status'        => '-',
+                'akreditasi'    => '-',
+                'tahun_berdiri' => '2000',
+                'visi'          => '-',
+                'misi'          => '-',
+                'tujuan'        => '-',
+                'sejarah'       => '-'
+            ];
+
+            $this->profil->create($dataBaru);
+            $profil = $this->profil->first(); // ambil ulang data baru
+        }
+
         $data['title']   = 'Admin: Profil Sekolah';
-        $data['content'] = $this->profil->first();
+        $data['content'] = $profil;
         $data['page']    = 'pages/profil/index';
 
         $this->viewAdmin($data);
     }
+
     // admin
     public function edit()
     {

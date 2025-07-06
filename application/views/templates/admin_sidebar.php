@@ -13,7 +13,7 @@
 
     <!-- Menu sidebar -->
     <div class="p-3">
-        <a class="mb-3 text-white text-decoration-none d-block" href="<?= base_url('admin/dashboard') ?>">
+        <a class="mb-3 text-white text-decoration-none d-block" href="<?= base_url('home') ?>">
             <i class="fas fa-home me-2"></i> Dashboard
         </a>
         <!-- Dropdown Beranda -->
@@ -23,7 +23,7 @@
             </a>
             <ul class="dropdown-menu bg-white shadow-sm border-0" aria-labelledby="dropdownBeranda">
                 <li><a class="dropdown-item" href="<?= base_url('berita') ?>"><i class="fas fa-tachometer-alt me-2"></i> Halaman Utama</a></li>
-                <li><a class="dropdown-item" href="<?= base_url('sambutan') ?>"><i class="fas fa-user-tie me-2"></i> Sambutan Kepala Sekolah</a></li>
+                <li><a class="dropdown-item" href="<?= base_url('sambutan') ?>"><i class="fas fa-user-tie me-2"></i> Sambutan Guru</a></li>
             </ul>
         </div>
 

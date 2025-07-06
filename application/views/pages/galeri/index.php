@@ -62,6 +62,7 @@
                                     <th>ID Galeri</th>
                                     <th>Gambar</th>
                                     <th>Judul</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -79,6 +80,13 @@
                                             <?php endif; ?>
                                         </td>
                                         <td><?= $row->judul ?></td>
+                                        <td>
+                                            <form action="<?= base_url("galeri/toggle/$row->id_galeri") ?>" method="post">
+                                                <button class="btn btn-sm <?= $row->is_published ? 'btn-success' : 'btn-secondary' ?>" type="submit">
+                                                    <?= $row->is_published ? '<i class="fas fa-check-circle"></i> Publish' : '<i class="fas fa-times-circle"></i> Tidak' ?>
+                                                </button>
+                                            </form>
+                                        </td>
                                         <td>
                                             <?= form_open(base_url("galeri/delete/$row->id_galeri"), ['method' => 'POST']) ?>
                                             <?= form_hidden('id_galeri', $row->id_galeri) ?>

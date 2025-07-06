@@ -25,72 +25,81 @@
     </div>
 </div>
 
-<main role="main" class="container" style="padding-top: 80px;">
+<main role="main" class="container py-5">
+    <?php $this->load->view('layouts/_alert') ?>
     <div class="row">
         <div class="col-md-10 mx-auto">
-            <?php $this->load->view('layouts/_alert') ?>
-            <div class="card border border-light shadow-lg rounded-4" style="transition: all 0.3s;">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center">
-                        <span>Pengguna</span>
-                        <a href="<?= base_url('user/create') ?>" class="btn btn-sm btn-secondary ms-3">Tambah</a>
-                    </div>
-                    <form action="<?= base_url("user/search") ?>" method="POST" class="d-flex">
-                        <div class="input-group">
-                            <input type="text" name="keyword" class="form-control form-control-sm me-2" placeholder="Cari" value="<?= $this->session->userdata('keyword') ?>">
-                            <button class="btn btn-info btn-sm" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                            <a href=" <?= base_url("user/reset") ?>" class="btn btn-info btn-sm ms-1">
-                                <i class="fas fa-eraser"></i>
+            <div class="card mb-3">
+                <div class="card border border-light shadow-lg rounded-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <span>Data User</span>
+                            <a href="<?= base_url('user/create') ?>" class="btn btn-sm btn-primary ms-3">
+                                <i class="fas fa-plus"></i> Tambah User
                             </a>
                         </div>
-                    </form>
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Pengguna</th>
-                                <th scope="col">E-Mail</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $no = 0;
-                            foreach ($content as $row) : $no++; ?>
+
+                        <!-- Form pencarian -->
+                        <form action="<?= base_url("user/search") ?>" method="POST" class="d-flex">
+                            <div class="input-group">
+                                <input type="text" name="keyword" class="form-control form-control-sm me-2" placeholder="Cari User" value="<?= $this->session->userdata('keyword') ?>">
+                                <button class="btn btn-info btn-sm" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <a href="<?= base_url("user/reset") ?>" class="btn btn-info btn-sm ms-1">
+                                    <i class="fas fa-eraser"></i>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="thead-light">
                                 <tr>
-                                    <td><?= $no ?></td>
-                                    <td>
-                                        <p>
-                                            <img src="<?= $row->image ? base_url("images/user/$row->image") : base_url("images/user/avatar.png") ?>" alt="" height="50">
-                                            <?= $row->name ?>
-                                        </p>
-                                    </td>
-                                    <td><?= $row->email ?></td>
-                                    <td><?= $row->role ?></td>
-                                    <td><?= $row->is_active ? 'Aktif' : 'Tidak Aktif' ?></td>
-                                    <td>
-                                        <?= form_open(base_url("user/delete/$row->id"), ['method' => 'POST']) ?>
-                                        <?= form_hidden('id', $row->id) ?>
-                                        <a href=" <?= base_url("user/edit/$row->id") ?>" class="btn btn-sm">
-                                            <i class="fas fa-edit text-info"></i>
-                                        </a>
-                                        <button class="btn btn-sm" type="submit" onclick="return confirm('Apakah yakin ingin menghapus?')">
-                                            <i class="fas fa-trash text-danger"></i>
-                                        </button>
-                                        <?= form_close() ?>
-                                    </td>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
                                 </tr>
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
-                    <nav aria-label="Page navigation example">
-                        <?= $pagination ?>
-                    </nav>
+                            </thead>
+                            <tbody>
+                                <?php $no = 0;
+                                foreach ($content as $row) : $no++; ?>
+                                    <tr>
+                                        <td><?= $no ?></td>
+                                        <td><?= $row->name ?></td>
+                                        <td><?= $row->email ?></td>
+                                        <td><span class="badge bg-secondary"><?= $row->role ?></span></td>
+                                        <td>
+                                            <?php if ($row->is_active == 1) : ?>
+                                                <span class="badge bg-success">Aktif</span>
+                                            <?php else : ?>
+                                                <span class="badge bg-danger">Tidak Aktif</span>
+                                            <?php endif ?>
+                                        </td>
+                                        <td>
+                                            <a href="<?= base_url("user/edit/$row->id_user") ?>" class="btn btn-sm">
+                                                <i class="fas fa-edit text-info"></i>
+                                            </a>
+                                            <?= form_open(base_url("user/delete/$row->id_user"), ['method' => 'POST', 'class' => 'd-inline']) ?>
+                                            <button class="btn btn-sm" type="submit" onclick="return confirm('Yakin ingin menghapus user ini?')">
+                                                <i class="fas fa-trash text-danger"></i>
+                                            </button>
+                                            <?= form_close() ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+
+                        <!-- Navigasi Pagination -->
+                        <nav aria-label="Page navigation example">
+                            <?= $pagination ?>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>

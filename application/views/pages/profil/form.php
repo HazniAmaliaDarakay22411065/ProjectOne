@@ -34,6 +34,12 @@
                     <h5 class="mb-0">Edit Profil Sekolah</h5>
                 </div>
                 <div class="card-body p-4">
+                    <div class="mb-3">
+                        <label for="id_sekolah" class="form-label">ID Profil Sekolah</label>
+                        <input type="text" name="id_sekolah" id="id_sekolah"
+                            class="form-control form-control-sm" value="<?= set_value('id_sekolah', $input->id_sekolah) ?>" readonly>
+                    </div>
+
                     <?= form_open($form_action, ['method' => 'POST']) ?>
 
                     <?php
@@ -44,8 +50,7 @@
                         'status'        => 'Status',
                         'akreditasi'    => 'Akreditasi',
                         'tahun_berdiri' => 'Tahun Berdiri',
-                        'telephone'     => 'Telepon',
-                        'email'         => 'Email'
+
                     ];
                     foreach ($fields as $name => $label) : ?>
                         <div class="mb-3">
@@ -64,7 +69,7 @@
                         'misi'    => 'Misi',
                         'tujuan'  => 'Tujuan',
                         'sejarah' => 'Sejarah',
-                        'alamat'  => 'Alamat'
+
                     ];
                     foreach ($textareas as $name => $label) : ?>
                         <div class="mb-3">

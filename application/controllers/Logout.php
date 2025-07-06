@@ -9,9 +9,9 @@ class Logout extends MY_Controller
     public function index()
     {
         $sess_data = [
-            'id',
-            'name',
+            'id_user',
             'email',
+            'name',
             'role',
             'is_login'
         ];

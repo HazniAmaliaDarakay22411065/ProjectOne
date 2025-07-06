@@ -14,16 +14,36 @@ class Berita_model extends MY_Model
             'jenis'     => '',
             'deskripsi' => '',
             'image'     => '',
-            'tanggal'   => ''
+            'tanggal'   => '',
+            'is_published'  => 0
         ];
     }
 
     public function getValidationRules()
     {
         return [
-            ['field' => 'judul',     'label' => 'Judul',     'rules' => 'trim|required'],
-            ['field' => 'jenis',     'label' => 'Jenis',     'rules' => 'trim|required|in_list[pengumuman,agenda]'],
-            ['field' => 'deskripsi', 'label' => 'Deskripsi', 'rules' => 'trim|required'],
+            [
+                'field' => 'judul',
+                'label' => 'Judul',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'jenis',
+                'label' => 'Jenis',
+                'rules' => 'trim|required|in_list[pengumuman,agenda]'
+            ],
+
+            [
+                'field' => 'deskripsi',
+                'label' => 'Deskripsi',
+                'rules' => 'trim|required'
+            ],
+
+            [
+                'field' => 'is_published',
+                'label' => 'Status Publish',
+                'rules' => 'in_list[0,1]'
+            ]
             // Tidak wajib untuk tanggal, karena akan diset otomatis
         ];
     }

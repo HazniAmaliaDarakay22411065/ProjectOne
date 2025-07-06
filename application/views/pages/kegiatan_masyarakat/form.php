@@ -27,56 +27,79 @@
 
 
 <!-- form.php untuk admin - Kegiatan Masyarakat -->
-<main role="main" class="container mt-3">
-    <div class="row">
-        <div class="col-md-10 mx-auto">
-            <?php $this->load->view('layouts/_alert') ?>
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-white text-center rounded-top-4">
-                    <strong><?= $title ?></strong>
+<main role="main" class="container my-4">
+    <?php $this->load->view('layouts/_alert') ?>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card border border-light shadow-lg rounded-4">
+                <div class="card-header bg-white text-dark text-center fw-bold">
+                    <?= $title ?>
                 </div>
                 <div class="card-body">
-                    <div class="form-group mb-3">
-                        <label for="id_kegmas">ID Kegmas</label>
-                        <input type="text" name="id_kegmas" value="<?= $input->id_kegmas ?>" class="form-control" readonly>
-                    </div>
                     <?= form_open_multipart($form_action) ?>
-                    <div class="form-group mb-3">
-                        <label for="judul">Judul</label>
-                        <?= form_input('judul', $input->judul, ['class' => 'form-control', 'required' => true]) ?>
+
+                    <!-- ID Kegiatan Masyarakat (readonly) -->
+                    <div class="mb-3">
+                        <label for="id_kegmas">ID Kegiatan</label>
+                        <input type="text" name="id_kegmas" id="id_kegmas" class="form-control"
+                            value="<?= set_value('id_kegmas', $input->id_kegmas) ?>" readonly>
                     </div>
 
-                    <div class="form-group mb-3">
+                    <!-- Judul -->
+                    <div class="mb-3">
+                        <label for="judul">Judul</label>
+                        <input type="text" name="judul" id="judul" class="form-control"
+                            value="<?= set_value('judul', $input->judul) ?>" required>
+                        <?= form_error('judul', '<small class="text-danger">', '</small>') ?>
+                    </div>
+
+                    <!-- Penanggung Jawab -->
+                    <div class="mb-3">
                         <label for="id_guru">Penanggung Jawab (Guru)</label>
-                        <select name="id_guru" class="form-control" required>
+                        <select name="id_guru" id="id_guru" class="form-select <?= form_error('id_guru') ? 'is-invalid' : '' ?>">
                             <option value="">-- Pilih Guru --</option>
                             <?php foreach ($guru as $g) : ?>
-                                <option value="<?= $g->id_guru ?>" <?= $input->id_guru == $g->id_guru ? 'selected' : '' ?>>
-                                    <?= $g->id_guru ?> - <?= $g->nama ?>
+                                <option value="<?= $g->id_guru ?>" <?= set_select('id_guru', $g->id_guru, $input->id_guru == $g->id_guru) ?>>
+                                    <?= $g->nama ?> - <?= $g->nip ?>
                                 </option>
                             <?php endforeach ?>
                         </select>
+                        <?= form_error('id_guru', '<small class="text-danger">', '</small>') ?>
                     </div>
 
-
-
-                    <div class="form-group mb-3">
+                    <!-- Deskripsi -->
+                    <div class="mb-3">
                         <label for="deskripsi">Deskripsi</label>
-                        <textarea name="deskripsi" rows="5" class="form-control"><?= $input->deskripsi ?></textarea>
+                        <textarea name="deskripsi" id="deskripsi" rows="5" class="form-control"><?= set_value('deskripsi', $input->deskripsi) ?></textarea>
+                        <?= form_error('deskripsi', '<small class="text-danger">', '</small>') ?>
                     </div>
-                    <div class="form-group mb-3">
-                        <input type="file" name="image" class="form-control">
-                        <label for="image">Foto</label><br>
-                        <?php if (isset($input->image)) : ?>
-                            <img src="<?= base_url("images/kegiatan_masyarakat/$input->image") ?>" alt="" height="80" class="mb-2"><br>
-                        <?php endif ?>
 
+                    <!-- Gambar -->
+                    <div class="mb-3">
+                        <label for="image">Foto</label>
+                        <input type="file" name="image" id="image" class="form-control">
+                        <?php if (!empty($input->image)) : ?>
+                            <img src="<?= base_url("images/kegiatan_masyarakat/$input->image") ?>" height="80" class="mt-2">
+                        <?php endif ?>
                         <small class="text-danger"><?= $this->session->flashdata('image_error') ?></small>
                     </div>
-                    <!-- Tombol -->
-                    <button type="submit" class="btn btn-primary px-4">
+
+                    <!-- Status Publish -->
+                    <div class="mb-3">
+                        <label for="is_published">Status Publish</label>
+                        <select name="is_published" class="form-select">
+                            <option value="0" <?= $input->is_published == 0 ? 'selected' : '' ?>>Tidak dipublish</option>
+                            <option value="1" <?= $input->is_published == 1 ? 'selected' : '' ?>>Publish</option>
+                        </select>
+                    </div>
+
+                    <!-- Tombol Simpan -->
+                    <button type="submit" class="btn btn-primary">
                         Simpan
-                    </button> <?= form_close() ?>
+                    </button>
+
+                    <?= form_close() ?>
                 </div>
             </div>
         </div>

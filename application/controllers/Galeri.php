@@ -179,11 +179,15 @@ class Galeri extends MY_Controller
     public function show()
     {
         $data['title']   = 'Galeri Sekolah';
-        $data['galeri']  = $this->galeri->orderBy('id_galeri', 'DESC')->get();
+        $data['galeri']  = $this->galeri
+            ->where('is_published', 1)
+            ->orderBy('id_galeri', 'DESC')
+            ->get();
         $data['page']    = 'pages/galeri/show';
 
         $this->view($data);
     }
+
 
     public function image_required()
     {
@@ -192,5 +196,23 @@ class Galeri extends MY_Controller
             return false;
         }
         return true;
+    }
+
+    // publis
+    public function toggle($id)
+    {
+        $galeri = $this->galeri->where('id_galeri', $id)->first();
+
+        if (!$galeri) {
+            $this->session->set_flashdata('warning', 'Data tidak ditemukan!');
+            return redirect(base_url('galeri'));
+        }
+
+        $status = $galeri->is_published ? 0 : 1;
+        $this->galeri->update($id, ['is_published' => $status]);
+
+        $pesan = $status ? 'dipublish' : 'di-unpublish';
+        $this->session->set_flashdata('success', "Galeri berhasil $pesan.");
+        redirect(base_url('galeri'));
     }
 }

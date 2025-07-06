@@ -1,73 +1,57 @@
 <?php
+defined('BASEPATH') or exit('No direct script access allowed');
 
-defined('BASEPATH') OR exit('No direct script access allowed');
-
-class User_model extends MY_Model 
+class User_model extends MY_Model
 {
+	protected $table = 'user';
+	protected $primaryKey = 'id_user';
 
 	public function getDefaultValues()
 	{
 		return [
-			'name'		=> '',
-			'email'		=> '',
-			'role'		=> '',
-			'is_active'	=> ''
+			'name'      => '',
+			'email'     => '',
+			'password'  => '',
+			'role'      => 'admin',
+			'is_active' => 1
 		];
 	}
 
-	public function getValidationRules() //validasi rules
+	public function getValidationRules($isEdit = false)
 	{
-		$validationRules = [
+		$rules = [
 			[
-				'field'	=> 'name',
-				'label'	=> 'Nama',
-				'rules'	=> 'trim|required'
+				'field' => 'name',
+				'label' => 'Nama Lengkap',
+				'rules' => 'required|trim'
 			],
 			[
-				'field'	=> 'email',
-				'label'	=> 'E-Mail',
-				'rules'	=> 'trim|required|valid_email|callback_unique_email'
+				'field' => 'email',
+				'label' => 'Email',
+				'rules' => $isEdit
+					? 'required|trim|valid_email'
+					: 'required|trim|valid_email|is_unique[user.email]'
 			],
 			[
-				'field'	=> 'role',
-				'label'	=> 'Role',
-				'rules'	=> 'required'
+				'field' => 'role',
+				'label' => 'Role',
+				'rules' => 'required|in_list[admin]'
 			],
+			[
+				'field' => 'is_active',
+				'label' => 'Status',
+				'rules' => 'required|in_list[0,1]'
+			]
 		];
 
-		return $validationRules; //nilai balik dari validrules
-	}
-
-	public function uploadImage($fieldName, $fileName)
-	{
-		$config	= [
-			'upload_path'		=> './images/user',
-			'file_name'			=> $fileName,
-			'allowed_types'		=> 'jpg|gif|png|jpeg|JPG|PNG',
-			'max_size'			=> 1024,
-			'max_width'			=> 0,
-			'max_height'		=> 0,
-			'overwrite'			=> true,
-			'file_ext_tolower'	=> true
-		];
-
-		$this->load->library('upload', $config);
-
-		if ($this->upload->do_upload($fieldName)) {
-			return $this->upload->data();
-		} else {
-			$this->session->set_flashdata('image_error', $this->upload->display_errors('', ''));
-			return false;
+		if (!$isEdit || ($isEdit && !empty($this->input->post('password')))) {
+			$rules[] = [
+				'field' => 'password',
+				'label' => 'Password',
+				'rules' => 'required|min_length[6]'
+			];
 		}
-	}
 
-	public function deleteImage($fileName)
-	{
-		if (file_exists("./images/user/$fileName")) {
-			unlink("./images/user/$fileName");
-		}
+		return $rules;
 	}
-
 }
-
-/* End of file User_model.php */

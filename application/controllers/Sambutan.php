@@ -180,8 +180,8 @@ class Sambutan extends MY_Controller
         $data['title'] = 'Sambutan Guru';
         $data['sambutan'] = $this->sambutan
             ->with('data_guru')
-            ->where('is_published', 1)
-            ->orderBy('id_sambutan', 'DESC')
+            ->where('sambutan.is_published', 1)
+            ->orderBy('sambutan.id_sambutan', 'DESC')
             ->first();
 
         $data['page'] = 'pages/sambutan/show';

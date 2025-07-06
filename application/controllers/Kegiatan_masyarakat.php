@@ -160,15 +160,35 @@ class Kegiatan_masyarakat extends MY_Controller
 
         redirect(base_url('kegiatan_masyarakat'));
     }
+    // publih 
+    public function toggle($id)
+    {
+        $kegiatan = $this->kegmas->where('id_kegmas', $id)->first();
 
+        if (!$kegiatan) {
+            $this->session->set_flashdata('warning', 'Data tidak ditemukan!');
+            return redirect(base_url('kegiatan_masyarakat'));
+        }
+
+        $status = $kegiatan->is_published ? 0 : 1;
+        $this->kegmas->update($id, ['is_published' => $status]);
+
+        $message = $status ? 'dipublish' : 'di-unpublish';
+        $this->session->set_flashdata('success', "Kegiatan berhasil $message.");
+        redirect(base_url('kegiatan_masyarakat'));
+    }
+
+    // umum
     public function show()
     {
-        $data['title']   = 'Kegiatan Masyarakat Sekolah';
-        $data['kegiatan'] = $this->kegmas->withGuru()->orderBy('id_kegmas', 'DESC')->get();
-        $data['page']    = 'pages/kegiatan_masyarakat/show';
+        $data['title'] = 'Kegiatan Masyarakat Sekolah';
+        $data['kegiatan'] = $this->kegmas->getPublishedWithGuru(); // gunakan method yang aman dan rapi
+        $data['page'] = 'pages/kegiatan_masyarakat/show';
 
         $this->view($data);
     }
+
+
 
     public function image_required()
     {

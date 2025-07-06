@@ -96,12 +96,59 @@ class Sambutan_model extends MY_Model
     //     $this->db->where('sambutan.is_published', 1);
     //     return $this->db->get()->row();
     // }
+    // join 
+
+    // Join dengan tabel guru (default: data_guru)
     public function with($table = 'data_guru')
     {
-        $this->db->join($table, "$table.id_guru = sambutan.id_guru");
-        $this->db->select("sambutan.*, $table.nama as guru_nama, $table.nip as guru_nip, $table.foto as guru_foto");
+        $this->db->select("{$this->table}.*, {$table}.nama AS guru_nama, {$table}.nip AS guru_nip, {$table}.foto AS guru_foto");
+        $this->db->join($table, "{$table}.id_guru = {$this->table}.id_guru", 'left');
         return $this;
     }
+
+    // Join + hanya data yang dipublish
+    public function withPublished($table = 'data_guru')
+    {
+        $this->with($table);
+        $this->db->where("{$this->table}.is_published", 1);
+        return $this;
+    }
+
+    // Get all sambutan (with/without join)
+    public function getAll($where = [], $limit = null, $offset = null)
+    {
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+
+        if ($limit !== null) {
+            $this->db->limit($limit, $offset);
+        }
+
+        return $this->db->get($this->table)->result();
+    }
+
+
+
+    // Get sambutan yang dipublish (1 data saja)
+    public function get_published()
+    {
+        return $this->db->where("{$this->table}.is_published", 1)
+            ->get($this->table)
+            ->row();
+    }
+
+    // Reset semua status publish (jadi 0 semua)
+    public function reset_publish()
+    {
+        return $this->db->update($this->table, ['is_published' => 0]);
+    }
+    // public function with($table = 'data_guru')
+    // {
+    //     $this->db->join($table, "$table.id_guru = sambutan.id_guru");
+    //     $this->db->select("sambutan.*, $table.nama as guru_nama, $table.nip as guru_nip, $table.foto as guru_foto");
+    //     return $this;
+    // }
     // public function with($table = 'data_guru')
     // {
     //     $this->db->join($table, "$table.id_guru = sambutan.id_guru");
@@ -110,20 +157,20 @@ class Sambutan_model extends MY_Model
     // }
 
 
-    public function get_by_id($id)
-    {
-        return $this->db->get_where('sambutan', ['id_sambutan' => $id])->row_array();
-    }
+    // public function get_by_id($id)
+    // {
+    //     return $this->db->get_where('sambutan', ['id_sambutan' => $id])->row_array();
+    // }
 
-    public function get_published()
-    {
-        return $this->db->where('is_published', 1)->get($this->table)->row();
-    }
+    // public function get_published()
+    // {
+    //     return $this->db->where('is_published', 1)->get($this->table)->row();
+    // }
 
-    public function reset_publish()
-    {
-        return $this->db->update($this->table, ['is_published' => 0]);
-    }
+    // public function reset_publish()
+    // {
+    //     return $this->db->update($this->table, ['is_published' => 0]);
+    // }
 
     public function getIdSambutan()
     {

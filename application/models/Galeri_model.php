@@ -13,7 +13,8 @@ class Galeri_model extends MY_Model
         return [
             'id_galeri'   => '',
             'judul'       => '',
-            'image'       => ''
+            'image'       => '',
+            'is_published'  => 0
         ];
     }
 
@@ -31,6 +32,12 @@ class Galeri_model extends MY_Model
                 'label'    => 'Foto Galeri',
                 'rules'    => 'callback_image_required'
             ],
+
+            [
+                'field' => 'is_published',
+                'label' => 'Status Publish',
+                'rules' => 'in_list[0,1]'
+            ]
         ];
 
         return $validationRules;

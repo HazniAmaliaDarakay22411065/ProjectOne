@@ -96,4 +96,27 @@ class Profil_model extends MY_Model
     {
         return $this->db->where('id_sekolah', $id)->update($this->table, $data);
     }
+
+    public function generateIdSekolah()
+    {
+        $this->db->select('id_sekolah');
+        $this->db->like('id_sekolah', 'PS');
+        $this->db->order_by('id_sekolah', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get($this->table);
+
+        if ($query->num_rows() > 0) {
+            $lastId = $query->row()->id_sekolah;
+            $lastNumber = (int) substr($lastId, 2);
+            $newNumber = $lastNumber + 1;
+            return 'PS' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
+        } else {
+            return 'PS001';
+        }
+    }
+
+    public function create($data)
+    {
+        return $this->db->insert($this->table, $data);
+    }
 }

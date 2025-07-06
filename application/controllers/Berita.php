@@ -33,7 +33,6 @@ class Berita extends MY_Controller
         $this->viewAdmin($data);
     }
 
-
     public function search($page = null)
     {
         if (isset($_POST['keyword'])) {
@@ -44,15 +43,15 @@ class Berita extends MY_Controller
 
         $keyword = $this->session->userdata('keyword');
 
-        $data['title']        = 'Admin: Berita';
-        $data['berita']      = $this->berita->like('judul', $keyword)->paginate($page)->get();
-        $data['total_rows']   = $this->berita->like('judul', $keyword)->count();
-        $data['pagination']   = $this->berita->makePagination(
+        $data['title'] = 'Admin: Berita';
+        $data['berita'] = $this->berita->like('judul', $keyword)->paginate($page)->get();
+        $data['total_rows'] = $this->berita->like('judul', $keyword)->count();
+        $data['pagination'] = $this->berita->makePagination(
             base_url('berita/search'),
             3,
             $data['total_rows']
         );
-        $data['page']         = 'pages/berita/index';
+        $data['page'] = 'pages/berita/index';
 
         $this->viewAdmin($data);
     }
@@ -70,6 +69,7 @@ class Berita extends MY_Controller
             $input->id_berita = $this->berita->generateIdBerita();
         } else {
             $input = (object) $this->input->post(null, true);
+            $input->is_published = $this->input->post('is_published', true); // Tambah ini
         }
 
         if (!empty($_FILES) && $_FILES['image']['name'] !== '') {
@@ -116,6 +116,7 @@ class Berita extends MY_Controller
             $data['input'] = $data['content'];
         } else {
             $data['input'] = (object) $this->input->post(null, true);
+            $data['input']->is_published = $this->input->post('is_published', true); // Tambah ini
         }
 
         if (!empty($_FILES) && $_FILES['image']['name'] !== '') {
@@ -177,14 +178,30 @@ class Berita extends MY_Controller
         redirect(base_url('berita'));
     }
 
+    public function toggle($id)
+    {
+        $berita = $this->berita->where('id_berita', $id)->first();
+
+        if (!$berita) {
+            $this->session->set_flashdata('warning', 'Data tidak ditemukan!');
+            return redirect(base_url('berita'));
+        }
+
+        $status = $berita->is_published ? 0 : 1;
+        $this->berita->update($id, ['is_published' => $status]);
+
+        $pesan = $status ? 'dipublish' : 'di-unpublish';
+        $this->session->set_flashdata('success', "Berita berhasil $pesan.");
+        redirect(base_url('berita'));
+    }
+
     public function show()
     {
         $data['title'] = 'Berita';
-        $data['berita'] = $this->berita->orderBy('tanggal', 'DESC')->get(); // ambil semua berita
+        $data['berita'] = $this->berita->where('is_published', 1)->orderBy('tanggal', 'DESC')->get(); // hanya yang publish
         $data['page'] = 'pages/berita/show';
-        $this->view($data); // method dari MY_Controller
+        $this->view($data);
     }
-
 
     public function detail($id)
     {

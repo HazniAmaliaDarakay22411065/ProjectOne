@@ -163,6 +163,14 @@
                             <div class="text-danger small mt-1"><?= $this->session->flashdata('image_error') ?></div>
                         <?php endif; ?>
                     </div>
+                    <!-- publis -->
+                    <div class="form-group mb-3">
+                        <label for="is_published">Status Tampilkan</label>
+                        <select name="is_published" class="form-select">
+                            <option value="0" <?= $input->is_published == 0 ? 'selected' : '' ?>>Tidak Ditampilkan</option>
+                            <option value="1" <?= $input->is_published == 1 ? 'selected' : '' ?>>Tampilkan</option>
+                        </select>
+                    </div>
 
                     <!-- Tombol -->
                     <button type="submit" class="btn btn-primary px-4">Simpan</button>
@@ -172,4 +180,6 @@
             </div>
         </div>
     </div>
+
+    
 </main>

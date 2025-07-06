@@ -22,15 +22,14 @@
     </div>
 </div>
 
-<main role="main" class="container-fluid">
+<main role="main" class="container py-5">
     <?php $this->load->view('layouts/_alert') ?>
-    <div class="row justify-content-center">
-        <div class="col-lg-12 mt-4">
-            <div class="card border border-light shadow-lg rounded-4">
-                <!-- Card Header -->
-                <div class="card-header bg-white border-bottom">
-                    <div class="w-100 d-flex justify-content-between align-items-center flex-wrap gap-3">
-                        <!-- Kolom Tambah Guru -->
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <div class="card mb-3">
+                <div class="card border border-light shadow-lg rounded-4">
+                    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <!-- Kiri: Judul + Tambah -->
                         <div class="d-flex align-items-center gap-2">
                             <span class="fw-bold">Data Guru</span>
                             <a href="<?= base_url('guru/create') ?>" class="btn btn-sm btn-primary">
@@ -38,7 +37,7 @@
                             </a>
                         </div>
 
-                        <!-- Kolom Import Excel -->
+                        <!-- Tengah: Import Excel -->
                         <form action="<?= base_url('guru/import_excel') ?>" method="post" enctype="multipart/form-data" class="d-flex align-items-center gap-2">
                             <input type="file" name="file_excel" accept=".xlsx,.xls" class="form-control form-control-sm" style="max-width: 180px;" required>
                             <button type="submit" class="btn btn-success btn-sm">
@@ -46,7 +45,7 @@
                             </button>
                         </form>
 
-                        <!-- Kolom Pencarian -->
+                        <!-- Kanan: Pencarian -->
                         <form action="<?= base_url("guru/search") ?>" method="POST" class="d-flex align-items-center gap-2">
                             <div class="input-group input-group-sm">
                                 <input type="text" name="keyword" class="form-control" placeholder="Cari NIP / Nama" value="<?= $this->session->userdata('keyword') ?>">
@@ -59,69 +58,77 @@
                             </div>
                         </form>
                     </div>
-                </div>
 
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover align-middle">
-                            <thead class="table-light text-center">
-                                <tr>
-                                    <th style="width: 40px;">No</th>
-                                    <th>ID Guru</th>
-                                    <th>Foto</th>
-                                    <th style="min-width: 120px;">Nama</th>
-                                    <th>Tempat Lahir</th>
-                                    <th style="min-width: 120px;">Tanggal Lahir</th>
-                                    <th>NIP</th>
-                                    <th>Jabatan</th>
-                                    <th>JK</th>
-                                    <th>Deskripsi</th>
-                                    <th style="width: 80px;">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $no = 1;
-                                foreach ($content as $row) : ?>
-                                    <tr class="text-center">
-                                        <td><?= $no++ ?></td>
-                                        <td><?= $row->id_guru ?></td>
-                                        <td>
-                                            <?php
-                                            $foto = (!empty($row->foto) && file_exists(FCPATH . "images/guru/{$row->foto}"))
-                                                ? base_url("images/guru/{$row->foto}")
-                                                : base_url("images/guru/default.png");
-                                            ?>
-                                            <img src="<?= $foto ?>" class="img-thumbnail rounded" height="40" width="40">
-                                        </td>
-                                        <td class="text-start"><?= $row->nama ?></td>
-                                        <td><?= $row->tempat_lahir ?></td>
-                                        <td><?= date('d-m-Y', strtotime($row->tgl_lahir)) ?></td>
-                                        <td><?= $row->nip ?></td>
-                                        <td><?= $row->jabatan ?></td>
-                                        <td><?= $row->jk == 'L' ? 'L' : 'P' ?></td>
-                                        <td class="text-start"><?= $row->deskripsi ?></td>
-                                        <td>
-                                            <?= form_open(base_url("guru/delete/$row->id_guru"), ['method' => 'POST']) ?>
-                                            <?= form_hidden('id_guru', $row->id_guru) ?>
-                                            <a href="<?= base_url("guru/edit/$row->id_guru") ?>" class="btn btn-sm">
-                                                <i class="fas fa-edit text-info"></i>
-                                            </a>
-                                            <button class="btn btn-sm" type="submit" onclick="return confirm('Apakah yakin ingin menghapus guru ini?')">
-                                                <i class="fas fa-trash text-danger"></i>
-                                            </button>
-                                            <?= form_close() ?>
-                                        </td>
+                    <!-- Body -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>ID Guru</th>
+                                        <th>Foto</th>
+                                        <th>Nama</th>
+                                        <th>Tempat Lahir</th>
+                                        <th>Tanggal Lahir</th>
+                                        <th>NIP</th>
+                                        <th>Jabatan</th>
+                                        <th>JK</th>
+                                        <th>Deskripsi</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
                                     </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    <?php $no = 1;
+                                    foreach ($content as $row) : ?>
+                                        <tr>
+                                            <td><?= $no++ ?></td>
+                                            <td><?= $row->id_guru ?></td>
+                                            <td>
+                                                <?php
+                                                $foto = (!empty($row->foto) && file_exists(FCPATH . "images/guru/{$row->foto}"))
+                                                    ? base_url("images/guru/{$row->foto}")
+                                                    : base_url("images/guru/default.png");
+                                                ?>
+                                                <img src="<?= $foto ?>" class="img-thumbnail rounded" width="40" height="40">
+                                            </td>
+                                            <td class="text-start"><?= $row->nama ?></td>
+                                            <td><?= $row->tempat_lahir ?></td>
+                                            <td><?= date('d-m-Y', strtotime($row->tgl_lahir)) ?></td>
+                                            <td><?= $row->nip ?></td>
+                                            <td><?= $row->jabatan ?></td>
+                                            <td><?= $row->jk == 'L' ? 'L' : 'P' ?></td>
+                                            <td class="text-start"><?= $row->deskripsi ?></td>
+                                            <td>
+                                                <form action="<?= base_url("guru/toggle/$row->id_guru") ?>" method="post">
+                                                    <button class="btn btn-sm <?= $row->is_published ? 'btn-success' : 'btn-secondary' ?>" type="submit">
+                                                        <?= $row->is_published ? '<i class="fas fa-check-circle"></i> Publish' : '<i class="fas fa-times-circle"></i> Tidak' ?>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <?= form_open(base_url("guru/delete/$row->id_guru"), ['method' => 'POST']) ?>
+                                                <?= form_hidden('id_guru', $row->id_guru) ?>
+                                                <a href="<?= base_url("guru/edit/$row->id_guru") ?>" class="btn btn-sm">
+                                                    <i class="fas fa-edit text-info"></i>
+                                                </a>
+                                                <button class="btn btn-sm" type="submit" onclick="return confirm('Apakah yakin ingin menghapus guru ini?')">
+                                                    <i class="fas fa-trash text-danger"></i>
+                                                </button>
+                                                <?= form_close() ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <!-- Navigasi Pagination -->
-                    <nav aria-label="Page navigation example">
-                        <?= $pagination ?>
-                    </nav>
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation example">
+                            <?= $pagination ?>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>

@@ -62,6 +62,7 @@
                                 <th>Judul</th>
                                 <th>Jenis</th>
                                 <th>Deskripsi</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -81,6 +82,15 @@
                                     <td><?= $row->judul ?></td>
                                     <td><span class="badge bg-info"><?= ucfirst($row->jenis) ?></span></td>
                                     <td><?= substr(strip_tags($row->deskripsi), 0, 80) ?>...</td>
+                                    <!-- status -->
+                                    <td>
+                                        <form action="<?= base_url("berita/toggle/$row->id_berita") ?>" method="post">
+                                            <button class="btn btn-sm <?= $row->is_published ? 'btn-success' : 'btn-secondary' ?>" type="submit">
+                                                <?= $row->is_published ? '<i class="fas fa-check-circle"></i> Dipublish' : '<i class="fas fa-times-circle"></i> Tidak' ?>
+                                            </button>
+                                        </form>
+                                    </td>
+
                                     <td>
                                         <?= form_open(base_url("berita/delete/$row->id_berita"), ['method' => 'POST']) ?>
                                         <?= form_hidden('id_berita', $row->id_berita) ?>

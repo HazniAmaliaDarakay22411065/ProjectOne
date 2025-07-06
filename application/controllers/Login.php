@@ -1,19 +1,15 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Login extends MY_Controller
 {
-
     public function __construct()
-    //construct akan menegecek apakah user yg sdh login atau belum, jika benar maka akan di ridierect atau dikembalikan  pada halaman utama 
-
     {
         parent::__construct();
-        $is_login    = $this->session->userdata('is_login');
+        $this->load->model('Login_model', 'login');
 
-        if ($is_login) {
-            redirect(base_url());
+        if ($this->session->userdata('is_login')) {
+            redirect('dashboard');
             return;
         }
     }
@@ -21,27 +17,25 @@ class Login extends MY_Controller
     public function index()
     {
         if (!$_POST) {
-            $input    = (object) $this->login->getDefaultValues();
+            $input = (object) $this->login->getDefaultValues();
         } else {
-            $input    = (object) $this->input->post(null, true);
+            $input = (object) $this->input->post(null, true);
         }
 
-        if (!$this->login->validate()) {
-            $data['title']    = 'Login';
-            $data['input']    = $input;
-            $data['page']    = 'pages/auth/login';
-
+        if (!$this->form_validation->set_rules($this->login->getValidationRules())->run()) {
+            $data['title'] = 'Login';
+            $data['input'] = $input;
+            $data['page'] = 'pages/auth/login';
             $this->view($data);
             return;
         }
+
         if ($this->login->run($input)) {
-            $this->session->set_flashdata('success', 'Berhasil melakukan login!');
-            redirect(base_url());
+            $this->session->set_flashdata('success', 'Berhasil login!');
+            redirect('dashboard');
         } else {
-            $this->session->set_flashdata('error', 'E-Mail atau Password salah atau akun Anda sedang tidak aktif!');
-            redirect(base_url('login'));
+            $this->session->set_flashdata('error', 'Email atau password salah atau tidak aktif!');
+            redirect('login');
         }
     }
 }
-
-/* End of file Login.php */

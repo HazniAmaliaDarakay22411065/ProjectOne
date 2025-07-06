@@ -13,7 +13,8 @@ class Kegiatan_masyarakat_model extends MY_Model
             'id_guru'     => '',
             'judul'       => '',
             'image'       => '',
-            'deskripsi'   => ''
+            'deskripsi'   => '',
+            'is_published'  => 0
         ];
     }
 
@@ -34,6 +35,12 @@ class Kegiatan_masyarakat_model extends MY_Model
                 'field' => 'deskripsi',
                 'label' => 'Deskripsi',
                 'rules' => 'required|trim'
+            ],
+
+            [
+                'field' => 'is_published',
+                'label' => 'Status Publish',
+                'rules' => 'in_list[0,1]'
             ]
         ];
     }
@@ -70,10 +77,20 @@ class Kegiatan_masyarakat_model extends MY_Model
     // JOIN guru untuk menampilkan nama guru di controller/view
     public function withGuru()
     {
-        $this->db->join('data_guru', 'data_guru.id_guru = kegiatan_masyarakat.id_guru');
         $this->db->select('kegiatan_masyarakat.*, data_guru.nama AS nama_guru');
+        $this->db->join('data_guru', 'data_guru.id_guru = kegiatan_masyarakat.id_guru');
         return $this;
     }
+
+    // Ambil data yang sudah di-publish + join nama guru
+    public function getPublishedWithGuru()
+    {
+        $this->withGuru();
+        $this->db->where('kegiatan_masyarakat.is_published', 1);
+        $this->db->order_by('kegiatan_masyarakat.id_kegmas', 'DESC');
+        return $this->db->get($this->table)->result();
+    }
+
 
     //  Generate ID otomatis 
     public function generateIdKegmas()

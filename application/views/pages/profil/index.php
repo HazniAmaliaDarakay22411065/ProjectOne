@@ -34,6 +34,10 @@
             <div class="table-responsive">
                 <table class="table table-bordered align-middle shadow-sm rounded-3 overflow-hidden">
                     <tbody>
+                        <tr class="bg-light">
+                            <th class="fw-bold text-dark">ID Profil Sekolah</th>
+                            <td class="text-dark"><?= $content->id_sekolah ?></td>
+                        </tr>
                         <tr class="bg-white">
                             <th class="fw-bold text-dark">Nama Sekolah</th>
                             <td class="text-dark"><?= $content->nama_sekolah ?></td>
@@ -74,18 +78,7 @@
                             <th class="fw-bold text-dark">Sejarah</th>
                             <td class="text-dark"><?= nl2br($content->sejarah) ?></td>
                         </tr>
-                        <tr class="bg-white">
-                            <th class="fw-bold text-dark">Alamat</th>
-                            <td class="text-dark"><?= $content->alamat ?></td>
-                        </tr>
-                        <tr class="bg-light">
-                            <th class="fw-bold text-dark">Telepon</th>
-                            <td class="text-dark"><?= $content->telephone ?></td>
-                        </tr>
-                        <tr class="bg-white">
-                            <th class="fw-bold text-dark">Email</th>
-                            <td class="text-dark"><?= $content->email ?></td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>

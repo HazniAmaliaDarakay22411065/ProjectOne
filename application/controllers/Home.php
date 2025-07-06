@@ -21,11 +21,14 @@ class Home extends MY_Controller
 
         $data['kegiatan_preview'] = $this->kegiatan
             ->withGuru()
-            ->orderBy('id_kegmas', 'DESC')
+            ->where('kegiatan_masyarakat.is_published', 1)
+            ->orderBy('kegiatan_masyarakat.id_kegmas', 'DESC')
             ->limit(4)
             ->get();
 
+
         $data['galeri_preview'] = $this->galeri
+            ->where('is_published', 1)
             ->orderBy('id_galeri', 'DESC')
             ->limit(4)
             ->get();
@@ -34,9 +37,10 @@ class Home extends MY_Controller
         // Ambil sambutan terbaru yang sudah dipublish
         $sambutan = $this->sambutan
             ->with('data_guru')
-            ->where('is_published', 1)
-            ->orderBy('id_sambutan', 'DESC')
+            ->where('sambutan.is_published', 1)
+            ->orderBy('sambutan.id_sambutan', 'DESC')
             ->first();
+
 
         // Potong isi sambutan jika ada
         if (!empty($sambutan->isi_sambutan)) {

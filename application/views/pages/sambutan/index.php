@@ -96,6 +96,7 @@
                                             </button>
                                         </form>
                                     </td>
+                                    
                                     <td>
                                         <?= form_open(base_url("sambutan/delete/$row->id_sambutan"), ['method' => 'POST']) ?>
                                         <?= form_hidden('id_sambutan', $row->id_sambutan) ?>

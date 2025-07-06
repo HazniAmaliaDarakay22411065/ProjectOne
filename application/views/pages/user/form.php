@@ -25,71 +25,83 @@
     </div>
 </div>
 
-<main role="main" class="container">
-    <div class=" row">
-        <div class="col-md-10 mx-auto">
-            <?php $this->load->view('layouts/_alert') ?>
-            <div class="card border border-light shadow-lg rounded-4" style="transition: all 0.3s;">
-                <div class="card-header">
-                    <span>Formulir Pengguna</span>
+<main role="main" class="container my-4">
+    <?php $this->load->view('layouts/_alert') ?>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border border-light shadow-lg rounded-4">
+                <div class="card-header bg-white text-dark text-center rounded-top-4 border-bottom fw-bold">
+                    <?= $title ?>
                 </div>
                 <div class="card-body">
-                    <?= form_open_multipart($form_action, ['method' => 'POST']) ?>
-                    <?= isset($input->id) ? form_hidden('id', $input->id) : '' ?>
-                    <div class="form-group">
-                        <label for="">Nama</label>
-                        <?= form_input('name', $input->name, ['class' => 'form-control', 'required' => true, 'autofocus' => true]) ?>
-                        <?= form_error('name') ?>
-                    </div>
-                    <div class="form-group">
-                        <label for="">E-Mail</label>
-                        <?= form_input(['type' => 'email', 'name' => 'email', 'value' => $input->email, 'class' => 'form-control', 'placeholder' => 'Masukkan alamat email aktif', 'required' => true]) ?>
-                        <?= form_error('email') ?>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Password</label>
-                        <?= form_password('password', '', ['class' => 'form-control', 'placeholder' => 'Masukkan password minimal 8 karakter']) ?>
-                        <?= form_error('password') ?>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Role</label>
-                        <br>
-                        <div class="form-check form-check-inline">
-                            <?= form_radio(['name' => 'role', 'value' => 'admin', 'checked' => $input->role == 'admin' ? true : false, 'form-check-input']) ?>
-                            <label for="" class="form-check-label">Admin</label>
+                    <form action="<?= $form_action ?>" method="POST">
+
+                        <!-- Nama -->
+                        <div class="form-group mb-3">
+                            <label for="name">Nama Lengkap</label>
+                            <input type="text" name="name" value="<?= set_value('name', $input->name) ?>" class="form-control" required>
+                            <?= form_error('name') ?>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <?= form_radio(['name' => 'role', 'value' => 'users', 'checked' => $input->role == 'users' ? true : false, 'form-check-input']) ?>
-                            <label for="" class="form-check-label">users</label>
+
+                        <!-- Email -->
+                        <div class="form-group mb-3">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" value="<?= set_value('email', $input->email) ?>" class="form-control" required>
+                            <?= form_error('email') ?>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Status</label>
-                        <br>
-                        <div class="form-check form-check-inline">
-                            <?= form_radio(['name' => 'is_active', 'value' => 1, 'checked' => $input->is_active == 1 ? true : false, 'form-check-input']) ?>
-                            <label for="" class="form-check-label">Aktif</label>
+                        <!-- pass -->
+                        <div class="mb-3">
+                            <label for="password">Kata Sandi</label>
+                            <div class="input-group">
+                                <input type="password" id="password" name="password" class="form-control <?= form_error('password') ? 'is-invalid' : '' ?>">
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()" tabindex="-1">
+                                    <i class="fas fa-eye" id="icon-eye"></i>
+                                </button>
+                            </div>
+                            <?= form_error('password') ?>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <?= form_radio(['name' => 'is_active', 'value' => 0, 'checked' => $input->is_active == 0 ? true : false, 'form-check-input']) ?>
-                            <label for="" class="form-check-label">Tidak Aktif</label>
+
+
+
+                        <!-- Role (readonly admin) -->
+                        <div class="form-group mb-3">
+                            <label for="role">Role</label>
+                            <select name="role" class="form-control" readonly>
+                                <option value="admin" <?= $input->role == 'admin' ? 'selected' : '' ?>>Admin</option>
+                            </select>
+                            <?= form_error('role') ?>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Foto</label>
-                        <br>
-                        <?= form_upload('image') ?>
-                        <?php if ($this->session->flashdata('image_error')) : ?>
-                            <small class="form-text text-danger"><?= $this->session->flashdata('image_error') ?></small>
-                        <?php endif ?>
-                        <?php if (isset($input->image)): ?>
-                            <img src="<?= base_url("/images/user/$input->image") ?>" alt="" height="150">
-                        <?php endif ?>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-3">Simpan</button>
-                    <?= form_close() ?>
+
+                        <!-- Status Aktif -->
+                        <div class="form-group mb-4">
+                            <label for="is_active">Status</label>
+                            <select name="is_active" class="form-control" required>
+                                <option value="1" <?= $input->is_active == 1 ? 'selected' : '' ?>>Aktif</option>
+                                <option value="0" <?= $input->is_active == 0 ? 'selected' : '' ?>>Tidak Aktif</option>
+                            </select>
+                            <?= form_error('is_active') ?>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById("password");
+            const iconEye = document.getElementById("icon-eye");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                iconEye.classList.remove("fa-eye");
+                iconEye.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                iconEye.classList.remove("fa-eye-slash");
+                iconEye.classList.add("fa-eye");
+            }
+        }
+    </script>
 </main>

@@ -47,4 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.addEventListener("scroll", handleScrollAnimation);
     handleScrollAnimation();
-});
+
+    
+}); 

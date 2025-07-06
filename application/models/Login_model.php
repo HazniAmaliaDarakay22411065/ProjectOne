@@ -1,62 +1,52 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Login_model extends MY_Model
 {
-
 	protected $table = 'user';
 
 	public function getDefaultValues()
 	{
 		return [
-			'email'		=> '',
-			'password'	=> '',
+			'email'    => '',
+			'password' => '',
 		];
 	}
 
 	public function getValidationRules()
 	{
-		$validationRules = [
+		return [
 			[
-				'field'	=> 'email',
-				'label'	=> 'E-Mail',
-				'rules'	=> 'trim|required|valid_email'
+				'field' => 'email',
+				'label' => 'Email',
+				'rules' => 'trim|required|valid_email'
 			],
 			[
-				'field'	=> 'password',
-				'label'	=> 'Password',
-				'rules'	=> 'required'
-			]
+				'field' => 'password',
+				'label' => 'Password',
+				'rules' => 'required'
+			],
 		];
-
-		return $validationRules;
 	}
 
 	public function run($input)
 	{
-		$query	= $this->where('email', strtolower($input->email))
-			->where('is_active', 1)
-			->first();
+		$user = $this->db->where('email', strtolower($input->email))->get($this->table)->row();
 
-		//melakukan validasi apakah datanya kosong dan dari form tersebut sama dari hasil query 
+		if (!$user) return false;
+		if (!hashEncryptVerify($input->password, $user->password)) return false;
+		if ($user->role !== 'admin') return false;
+		if ($user->is_active != 1) return false;
 
-		if (!empty($query) && hashEncryptVerify($input->password, $query->password)) {
-			$sess_data = [
-				'id'		=> $query->id,
-				'name'		=> $query->name,
-				'email'		=> $query->email,
-				'role'		=> $query->role,
-				'image'		=> $query->image ?? 'default.png',
-				'is_login'	=> true
+		$session_data = [
+			'id_user' => $user->id_user,
+			'email'   => $user->email,
+			'name'    => $user->name,
+			'role'    => $user->role,
+			'is_login' => true
+		];
 
-			];
-			$this->session->set_userdata($sess_data);
-			return true;
-		}
-
-		return false;
+		$this->session->set_userdata($session_data);
+		return true;
 	}
 }
-
-/* End of file Login_model.php */

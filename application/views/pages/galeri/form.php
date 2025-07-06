@@ -76,6 +76,14 @@
                             <small class="text-danger d-block mt-1"><?= $this->session->flashdata('image_error') ?></small>
                         <?php endif ?>
                     </div>
+                    <!-- publis -->
+                    <div class="form-group mb-3">
+                        <label for="is_published">Status Publish</label>
+                        <select name="is_published" class="form-control">
+                            <option value="0" <?= $input->is_published == 0 ? 'selected' : '' ?>>Tidak dipublish</option>
+                            <option value="1" <?= $input->is_published == 1 ? 'selected' : '' ?>>Dipublish</option>
+                        </select>
+                    </div>
 
                     <!-- Tombol -->
                     <button type="submit" class="btn btn-primary px-4">

@@ -1,5 +1,6 @@
 <div class="container-fluid">
-    <h1 class="mb-4">Selamat Datang, Admin!</h1>
+    <h3>Hai, Selamat Datang <?= $this->session->userdata('name') ?>!</h3>
+
 
     <div class="row g-4">
         <div class="col-md-4">

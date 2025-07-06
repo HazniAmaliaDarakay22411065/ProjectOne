@@ -289,11 +289,31 @@ class Guru extends MY_Controller
             redirect(base_url('guru'));
         }
     }
+    // publish 
+    public function toggle($id)
+    {
+        $guru = $this->guru->where('id_guru', $id)->first();
+
+        if (!$guru) {
+            $this->session->set_flashdata('warning', 'Data guru tidak ditemukan!');
+            return redirect(base_url('guru'));
+        }
+
+        $status = $guru->is_published ? 0 : 1;
+        $this->guru->update($id, ['is_published' => $status]);
+
+        $pesan = $status ? 'ditampilkan' : 'un-published';
+        $this->session->set_flashdata('success', "Data guru berhasil $pesan.");
+        redirect(base_url('guru'));
+    }
 
     public function show()
     {
         $data['title'] = 'Daftar Guru';
-        $data['guru']  = $this->guru->orderBy('id_guru', 'ASC')->get();
+        $data['guru']  = $this->guru
+            ->where('is_published', 1)
+            ->orderBy('id_guru', 'ASC')
+            ->get();
         $data['page']  = 'pages/guru/show';
 
         $this->view($data);

@@ -62,7 +62,7 @@
                                 <th style="width: 20%;">Judul</th>
                                 <th style="width: 40%;">Deskripsi</th>
                                 <th style="width: 40%;">Penanggung Jawab</th>
-
+                                <th style="width: 10%;">Status</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -82,6 +82,15 @@
                                     <td><?= $row->judul ?></td>
                                     <td style="white-space: pre-wrap;"><?= strip_tags($row->deskripsi) ?></td>
                                     <td><?= $row->nama_guru ?? '-' ?></td>
+
+                                    <td>
+                                        <form action="<?= base_url("kegiatan_masyarakat/toggle/$row->id_kegmas") ?>" method="post">
+                                            <button class="btn btn-sm <?= $row->is_published ? 'btn-success' : 'btn-secondary' ?>" type="submit">
+                                                <?= $row->is_published ? '<i class="fas fa-check-circle"></i> Dipublish' : '<i class="fas fa-times-circle"></i> Tidak' ?>
+                                            </button>
+                                        </form>
+                                    </td>
+
                                     <td>
                                         <?= form_open(base_url("kegiatan_masyarakat/delete/$row->id_kegmas"), ['method' => 'POST']) ?>
                                         <?= form_hidden('id_kegmas', $row->id_kegmas) ?>

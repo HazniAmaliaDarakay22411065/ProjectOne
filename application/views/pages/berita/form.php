@@ -80,6 +80,16 @@
                         <small class="text-danger"><?= $this->session->flashdata('image_error') ?></small>
                     </div>
 
+                    <!-- publish -->
+                    <div class="mb-3">
+                        <label>Status Publish</label>
+                        <select name="is_published" class="form-select">
+                            <option value="0" <?= $input->is_published == 0 ? 'selected' : '' ?>>Tidak dipublish</option>
+                            <option value="1" <?= $input->is_published == 1 ? 'selected' : '' ?>>Publish</option>
+                        </select>
+                    </div>
+
+
                     <!-- Tombol Simpan -->
                     <button type="submit" class="btn btn-primary px-4">Simpan</button>
 

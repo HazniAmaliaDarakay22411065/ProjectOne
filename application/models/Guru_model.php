@@ -17,7 +17,8 @@ class Guru_model extends MY_Model
             'jk'         => '',
             'jabatan'    => '',
             'deskripsi'  => '',
-            'foto'       => 'default.jpg'
+            'foto'       => 'default.jpg',
+            'is_published'  => 0
         ];
     }
     public function validate()
@@ -71,6 +72,12 @@ class Guru_model extends MY_Model
                 'field' => 'deskripsi',
                 'label' => 'Deskripsi',
                 'rules' => 'trim|required'
+            ],
+
+            [
+                'field' => 'is_published',
+                'label' => 'Status Publish',
+                'rules' => 'in_list[0,1]'
             ]
         ];
     }
